@@ -61,5 +61,5 @@ function calcularPeso(quantidade){
 }
 
 function enviar(){
-    location = "http://wa.me/5551998116453?text=acesse%20esse%20site%20para%20ver%20o%20pedido: "
+    location = `http://wa.me/5551998116453?text=acesse%20esse%20site%20para%20ver%20o%20pedido:$20https://ryan-castro.github.io/tabela-compra/src/pages/compra.html?id=${query}`
 }

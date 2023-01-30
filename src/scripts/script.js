@@ -70,7 +70,7 @@ function gerar(){
     db.collection("compras").add(compras).then((doc)=>{
         $("#res").innerHTML = "seu pedido foi bem sucedido"
         setTimeout(()=>{
-            location = `/src/pages/compra.html?id=${doc.id}`
+            location = `https://ryan-castro.github.io/tabela-compra/src/pages/compra.html?id=${doc.id}`
         },3000)
     })
 }
