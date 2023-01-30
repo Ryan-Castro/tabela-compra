@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tabela-Compra</title>
+    <link rel="stylesheet" href="./src/styles/style.css">
 </head>
 <body>
     <table>
         <thead>
             <tr>
-                <th colspan="2">produtos</th>
-                <th>quantidades</th>
-                <th colspan="2">Tabela R$ 140,00</th>
-                <th colspan="2">Tabela R$ 300,00</th>
-                <th colspan="2">Tabela R$ 600,00</th>
-                <th colspan="2">Tabela R$ 1500,00</th>
+                <th colspan="2">Produtos</th>
+                <th>Quantidades</th>
+                <th colspan="2" id="phase">Tabela R$ 140,00</th>
             </tr>
             <tr>
                 <th>ID</th>
@@ -24,21 +21,20 @@
                 <th></th>
                 <th>V.Unid</th>
                 <th>Valor Total</th>
-                <th>V.Unid</th>
-                <th>Valor Total</th>
-                <th>V.Unid</th>
-                <th>Valor Total</th>
-                <th>V.Unid</th>
-                <th>Valor Total</th>
             </tr>
         </thead>
         <tbody>
 
         </tbody>
-    </table>
+        <tfoot>
 
-    <button onclick="gerar()">Gerar o código</button>
+        </tfoot>
+    </table>
     <div id="res"></div>
-    <script src="script.js"></script>
+    <button onclick="gerar()">Gerar o código</button>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="src/scripts/firebase.js"></script>
+    <script src="./src/scripts/script.js"></script>
 </body>
 </html>
