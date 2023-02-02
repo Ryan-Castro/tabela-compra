@@ -6,7 +6,7 @@ let tProdB = tProd.children[1]
 let tProdF = tProd.children[2]
 let valorTotal = 0  
 let pesoTot = 0 
-let formulario
+let formulario = ""
 
 
 
