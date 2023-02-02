@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valente Cosméticos</title>
+    <link rel="stylesheet" href="../styles/admin.css">
+</head>
+<body>
+    <header>
+        <h1>Valente cosméticos</h1>
+        <button onclick="add()"><h1>Adicionar</h1></button>
+    </header>
+    <main>
+    </main>
+    <div id="modal">
+        <div id="content"> 
+            <h1 id="titleFunction">Adicionar</h1>
+            <input type="text" id="name" placeholder="Nome">
+            <input type="number" id="weight" placeholder="Peso">
+            <input type="number" id="pBase" placeholder="Preço Base">
+            <input type="number" id="p300" placeholder="Preço a cima de 300">
+            <input type="number" id="p600" placeholder="Preço a cima de 300">
+            <input type="number" id="p1500" placeholder="Preço a cima de 300">
+            <input type="button" value="Enviar" onclick="send()">
+            <input type="hidden" id="productID">
+            <input type="button" value="Cancelar" onclick="cancel()">
+        </div>
+    </div>
+    <div id="modalDelet">
+        <div id="confirmDelet"> 
+            <h2>Deseja apagar:</h2>
+            <input type="hidden" id="deletId">
+            <input type="button" value="Apagar" onclick="delet()">
+            <input type="button" value="Cancelar" onclick="cancel()">
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../scripts/firebase.js"></script>
+    <script src="../scripts/admin.js"></script>
+</body>
+</html>

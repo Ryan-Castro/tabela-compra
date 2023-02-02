@@ -1,9 +1,11 @@
 let produtos = {}
 let compras = {}
-let table = $("table")
-let tableHeader = table.children[0]
-let tableBody   = table.children[1]
-let tableFooter = table.children[2]  
+let tProd = $("#tableProduct")
+let tProdH = tProd.children[0]
+let tProdB = tProd.children[1]
+let tProdF = tProd.children[2]
+let valorTotal = 0  
+let pesoTot = 0 
 
 
 
@@ -13,23 +15,16 @@ async function init(){
             produtos[doc.id] = doc.data()
         })
         Object.keys(produtos).forEach((produto, i)=>{
-            tableBody.innerHTML += `<tr id="item-${produto}">
-                                        <td>${i+1}</td>
-                                        <td>${produtos[produto].nome}</td>
-                                        <td><input type="number" onInput="update('${produto}', ${i})"/></td>
-                                        <td>${produtos[produto].preçoBase.toFixed(2)}</td>
-                                        <td></td>
-                                    </tr>`
+            tProdB.innerHTML += `<tr id="item-${produto}">
+                                    <td>${i+1}</td>
+                                    <td>${produtos[produto].nome}</td>
+                                    <td id="quant"><input type="number" onInput="update('${produto}', ${i})" min="0"/></td>
+                                    <td>${produtos[produto].preçoBase.toFixed(2)}</td>
+                                    <td></td>
+                                </tr>`
         })
     })
 }
-
-
-
-tableFooter.innerHTML += `  <tr>
-                                <td colspan="4">Total</td>
-                                <td id="soma">R$: 0</td>
-                            </tr>`
 
 
 
@@ -40,16 +35,20 @@ function update(id, i){
 }
 
 function calcular(preço){
-    valorTotal = 0   
+    valorTotal = 0     
+    pesoTot = 0 
     Object.keys(compras).forEach((id, i)=>{
         let valor = produtos[id][preço] * compras[id]
+        let peso = produtos[id]["peso"] * compras[id]
         valorTotal += valor
+        pesoTot += (peso/1000)
         $(`#item-${id}`).children[4].innerHTML = valor.toFixed(2) 
     })
-  /*   for(let c = 0; c < tableBody.children.length; c++){
-        $(`#item-${c}`).children[3].innerHTML = produtos[c][preço].toFixed(2)
-    } */
-    $(`#soma`).innerHTML = valorTotal.toFixed(2)
+    Object.keys(produtos).forEach((produto, i)=>{
+        $(`#item-${produto}`).children[3].innerHTML = produtos[produto][preço].toFixed(2) 
+    })
+    $(`#soma`).innerHTML = `R$: ${valorTotal.toFixed(2)}`
+    $(`#peso`).innerHTML = `Kg: ${pesoTot.toFixed(2)}`
     if(valorTotal >= 300 && preço == "preçoBase"){
         $("#phase").innerHTML = "Tabala R$ 300,00"
         calcular("preço300")
@@ -64,15 +63,53 @@ function calcular(preço){
     }
 }
 
+function check(){
+    let cadastro = $("input[name='register']:checked").value
+    let name = $("#name").value
+    let address = $("#address").value
+    if(name == "" || address == ""){
+        alert("preencha seus dados")
+        return
+    } 
+    if(valorTotal < 140 ){
+        alert("valor minimo de compre é 140R$")
+        return
+    }
+    if(cadastro == "não"){
+        $("#modal").style.display = "flex"
+        return
+    }
 
-function gerar(){
-    console.log("sendo gerado o pedido")
-    db.collection("compras").add(compras).then((doc)=>{
-        $("#res").innerHTML = "seu pedido foi bem sucedido"
-        setTimeout(()=>{
-            location = `https://ryan-castro.github.io/tabela-compra/src/pages/compra.html?id=${doc.id}`
-        },3000)
+    enviar()
+
+}
+
+function createCadastro(){
+    let numero  = $("#numero").value
+    let bairro  = $("#bairro").value
+    let cep = $("#cep").value
+    let cidade  = $("#cidade").value
+    let estado  = $("#estado").value
+    let tel = $("#tel").value
+    let email = $("#email").value
+    let formulario = `*Numero*:%20${numero}%0A*Bairro*:%20${bairro}%0A*Cep*:%20${cep}%0A*Cidade*:%20${cidade}%0A*Estado*:%20${estado}%0A*Tel*:%20${tel}%0A*Email*:%20${email}%0A`
+    enviar(formulario)
+}
+
+
+function enviar(formulario){
+    let cadastro = $("input[name='register']:checked").value
+    let name = $("#name").value
+    let address = $("#address").value
+    let pedido = ""
+    Object.keys(compras).forEach((id)=>{
+        pedido += `*${produtos[id].nome}*: ${compras[id]} %0A`
     })
+    location.href = `
+                    https://wa.me/5551998116453?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*Endere%C3%A7o*:%20${address.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${cadastro}%0A${formulario}%0A------------------------------%0AProdutos:%0A%0A${pedido.replaceAll(" ", "%20")}%0A------------------------------%0A%0A*Valor%20Total%20Sem%20o%20Frete*:%20R$${valorTotal.toString().replace(".", ",")}%0A*Peso%20Total*:%20${pesoTot.toString().replace(".", ",")}Kg%0AForma%20de%20Pagamento:%20PIX%0A
+                        `
 }
 
 init()
+
+

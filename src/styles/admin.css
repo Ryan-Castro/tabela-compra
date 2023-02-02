@@ -1,0 +1,122 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body{
+    overflow: hidden;
+}
+main{
+    overflow: auto;
+    height: calc(100vh - 70px);
+}
+header{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100vw;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    background-color: gray;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+button{
+    color: white;
+    background-color: aqua;
+    padding: 5px 20px;
+    border: 2px solid rgb(8, 94, 94);
+    border-radius: 20px;
+    text-shadow: 1px 1px 1px black;
+}
+.card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.112);
+    border: 2px solid black;
+}
+.card>div{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.card ul{
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.inputs{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    gap: 10px;
+}
+input{
+    width: 200px;
+    height: 30px;
+}
+#modal, #modalDelet{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.285);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+#content{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+    width: 400px;
+}
+#content input{
+    width: 90%;
+    padding: 5px 10px;
+}
+#confirmDelet{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+    width: 250px;
+    border-radius: 25px;
+}
+@media (max-width: 900px){
+    .card>div{
+        flex-direction: column;
+    }
+}
+@media (max-width: 720px){
+    .card{
+        flex-direction: column;
+    }
+}
+@media (max-width: 520px){
+    header{
+        flex-direction: column;
+        height: auto;
+        padding-bottom: 10px;
+    }
+    header h1{
+        font-size: 25px;
+    }
+    main{
+        height: calc(100vh - 82px);
+    }
+}
+@media (max-width: 400px){
+    .card h1{
+        font-size: 25px;
+    }
+}

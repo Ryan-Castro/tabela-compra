@@ -4,34 +4,91 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela-Compra</title>
+    <title>Valente Cosméticos</title>
     <link rel="stylesheet" href="./src/styles/style.css">
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th colspan="2">Produtos</th>
-                <th>Quantidades</th>
-                <th colspan="2" id="phase">Tabela R$ 140,00</th>
-            </tr>
-            <tr>
-                <th>ID</th>
-                <th>Nome do Produto</th>
-                <th></th>
-                <th>V.Unid</th>
-                <th>Valor Total</th>
-            </tr>
-        </thead>
-        <tbody>
+    <main>
 
-        </tbody>
-        <tfoot>
 
-        </tfoot>
-    </table>
-    <div id="res"></div>
-    <button onclick="gerar()">Gerar o código</button>
+        <section id="cad">
+            <table id="tCad">
+                <thead>
+                    <th colspan="2">Orgamento</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nome:</td>
+                        <td><input type="text" id="name"></td>
+                    </tr>
+                    <tr>
+                        <td>Endereço:</td>
+                        <td><input type="text" id="address"></td>
+                    </tr>
+                    <tr>
+                        <td>É cadastrado</td>
+                        <td>
+                            <input type="radio" name="register" id="nRegister" checked value="não">
+                            Não
+                            <input type="radio" name="register" id="yRegister" value="sim">
+                            Sim
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <img src="./src/images/logo.jpeg" alt="">
+        </section>
+
+
+
+        <section>
+            <table id="tableProduct">
+                <thead>
+                    <tr>
+                        <th colspan="3">Produto Valente</th>
+                        <th colspan="2" id="phase">Tabela R$ 140,00</th>
+                    </tr>
+                    <tr>
+                        <th>id</th>
+                        <th>Nome do produto</th>
+                        <th>Quantidade</th>
+                        <th>V. unid</th>
+                        <th>V. Total</th>
+                    </tr>
+                </thead>
+                <tbody id="produtos"></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Total</td>
+                        <td id="soma">R$: 0</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Peso</td>
+                        <td id="peso">Kg: 0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+
+        <div id="modal">
+            <div id="content">
+                <h1>Criar cadastro</h1>
+                <input type="text" placeholder="Numero" id="numero">
+                <input type="text" placeholder="bairro" id="bairro">
+                <input type="text" placeholder="Cep"    id="cep">
+                <input type="text" placeholder="Cidade" id="cidade">
+                <input type="text" placeholder="Estado" id="estado">
+                <input type="text" placeholder="Tel"    id="tel">
+                <input type="text" placeholder="Email"  id="email">
+                <input type="text" placeholder="CPF ou CNPJ">
+                <input type="button" value="enviar" onclick="createCadastro()">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+
+        <button onclick="check()">Enviar Whats</button>
+    </main>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="src/scripts/firebase.js"></script>

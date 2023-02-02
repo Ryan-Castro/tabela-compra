@@ -13,4 +13,13 @@ let db = app.firestore()
 function $(item){
   return document.querySelector(item)
 }
+function cancel(){
+  $("#modal").style.display = "none"
+  $("#modalDelet").style.display = "none"
+}
+$("#modal").addEventListener('click', (e)=>{
+  if(e.target.id == "modal"){
+      $("#modal").style.display = "none"
+  }
+})
 
