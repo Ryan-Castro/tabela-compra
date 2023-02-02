@@ -6,6 +6,7 @@ let tProdB = tProd.children[1]
 let tProdF = tProd.children[2]
 let valorTotal = 0  
 let pesoTot = 0 
+let formulario
 
 
 
@@ -18,7 +19,7 @@ async function init(){
             tProdB.innerHTML += `<tr id="item-${produto}">
                                     <td>${i+1}</td>
                                     <td>${produtos[produto].nome}</td>
-                                    <td id="quant"><input type="number" onInput="update('${produto}', ${i})" min="0"/></td>
+                                    <td class="tdInput"><input type="number" onInput="update('${produto}', ${i})" min="0"/></td>
                                     <td>${produtos[produto].preçoBase.toFixed(2)}</td>
                                     <td></td>
                                 </tr>`
@@ -92,7 +93,7 @@ function createCadastro(){
     let estado  = $("#estado").value
     let tel = $("#tel").value
     let email = $("#email").value
-    let formulario = `*Numero*:%20${numero}%0A*Bairro*:%20${bairro}%0A*Cep*:%20${cep}%0A*Cidade*:%20${cidade}%0A*Estado*:%20${estado}%0A*Tel*:%20${tel}%0A*Email*:%20${email}%0A`
+    formulario = `*Numero*:%20${numero}%0A*Bairro*:%20${bairro}%0A*Cep*:%20${cep}%0A*Cidade*:%20${cidade}%0A*Estado*:%20${estado}%0A*Tel*:%20${tel}%0A*Email*:%20${email}%0A`
     enviar(formulario)
 }
 

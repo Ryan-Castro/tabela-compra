@@ -90,9 +90,12 @@ button{
         justify-content: flex-start;
     }
     #cad input{
-        width: 30px;
+        width: auto;
     }
     #quant>input{
         width: 20px;
+    }
+    .tdInput{
+        padding: 0px;
     }
 }
