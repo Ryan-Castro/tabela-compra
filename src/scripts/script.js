@@ -17,7 +17,6 @@ async function init(){
         })
         Object.keys(produtos).forEach((produto, i)=>{
             tProdB.innerHTML += `<tr id="item-${produto}">
-                                    <td>${i+1}</td>
                                     <td>${produtos[produto].nome}</td>
                                     <td class="tdInput"><input type="number" onInput="update('${produto}', ${i})" min="0"/></td>
                                     <td>${produtos[produto].preçoBase.toFixed(2)}</td>

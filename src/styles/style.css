@@ -8,7 +8,6 @@ body{
     display: flex;
     align-items: center;
     flex-direction: column;
-    
 }
 main{
     max-width: 800px;
@@ -82,20 +81,25 @@ button{
     main{
         width: 100vw;
     }
-    section{
-        overflow: auto;
+    td, th{
+        font-size: 10px;
     }
     #cad{
         width: 100vw;
         justify-content: flex-start;
     }
-    #cad input{
+    #tableProduct .tdInput{
         width: auto;
-    }
-    #quant>input{
-        width: 20px;
     }
     .tdInput{
         padding: 0px;
+    }
+    .tdInput input{
+        width: 100%;
+    }
+}
+@media (max-width: 400px){
+    td, th{
+        padding: 5px;
     }
 }
