@@ -29,7 +29,7 @@ async function init(){
 
 
 function update(id, i){
-    compras[id] = $(`#item-${id}`).children[2].children[0].value
+    compras[id] = $(`#item-${id}`).children[1].children[0].value
     $("#phase").innerHTML = "Tabala R$ 140,00"
     calcular("preçoBase")
 }
@@ -42,10 +42,10 @@ function calcular(preço){
         let peso = produtos[id]["peso"] * compras[id]
         valorTotal += valor
         pesoTot += (peso/1000)
-        $(`#item-${id}`).children[4].innerHTML = valor.toFixed(2) 
+        $(`#item-${id}`).children[3].innerHTML = valor.toFixed(2) 
     })
     Object.keys(produtos).forEach((produto, i)=>{
-        $(`#item-${produto}`).children[3].innerHTML = produtos[produto][preço].toFixed(2) 
+        $(`#item-${produto}`).children[2].innerHTML = produtos[produto][preço].toFixed(2) 
     })
     $(`#soma`).innerHTML = `R$: ${valorTotal.toFixed(2)}`
     $(`#peso`).innerHTML = `Kg: ${pesoTot.toFixed(2)}`
