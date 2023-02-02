@@ -94,11 +94,11 @@ function createCadastro(){
     let tel = $("#tel").value
     let email = $("#email").value
     formulario = `*Numero*:%20${numero}%0A*Bairro*:%20${bairro}%0A*Cep*:%20${cep}%0A*Cidade*:%20${cidade}%0A*Estado*:%20${estado}%0A*Tel*:%20${tel}%0A*Email*:%20${email}%0A`
-    enviar(formulario)
+    enviar()
 }
 
 
-function enviar(formulario){
+function enviar(){
     let cadastro = $("input[name='register']:checked").value
     let name = $("#name").value
     let address = $("#address").value
