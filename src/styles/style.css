@@ -3,7 +3,6 @@
     padding: 0px;
     box-sizing: border-box;
 }
-
 body{
     display: flex;
     align-items: center;
@@ -12,25 +11,42 @@ body{
 main{
     max-width: 800px;
     height: 100vh;
-    margin-top: 50px;
+    padding-top: 50px;
 }
 section{
     width: 100%;
-    max-height: 65%;
+    position: relative;
 }
 #cad{
     display: flex;
     height: 150px;
     justify-content: space-between;
 }
+#payment{
+    width: 100%;
+    padding-left: 10px;
+}
+#sectionProduct{
+    height: calc(100% - 300px);
+    overflow: auto;
+}
+#sectionProduct thead{
+    position: sticky;
+    top: 0px;
+}
+#sectionProduct tfoot{
+    position: sticky;
+    bottom: 0px;
+}
 table{
-    border-collapse: collapse;
-
+    border-collapse: separate;
+    border-spacing: 0px;
 }
 td, th{
-    border: 1px solid black;
+    border: .1px solid black;
     padding: 5px 15px;
     white-space: nowrap;
+    background-color: white;
 }
 
 td>input[type=number], td>input[type=text]{
@@ -71,7 +87,9 @@ button{
     padding: 5px;
     width: 90%;
 }
-
+.price{
+    background-color: rgb(255, 255, 96);
+}
 
 @media (max-width: 600px){
     table{

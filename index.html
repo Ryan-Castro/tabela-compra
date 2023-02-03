@@ -22,16 +22,21 @@
                         <td class="tdInput"><input type="text" id="name"></td>
                     </tr>
                     <tr>
-                        <td>Endereço:</td>
-                        <td class="tdInput"><input type="text" id="address"></td>
-                    </tr>
-                    <tr>
                         <td>É cadastrado</td>
                         <td>
                             <input type="radio" name="register" id="nRegister" checked value="não">
                             Não
                             <input type="radio" name="register" id="yRegister" value="sim">
                             Sim
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Formar de Pagamento</td>
+                        <td>
+                            <select id="payment">
+                                <option value="Pix">Pix</option>
+                                <option value="Cartão">Cartão</option>
+                            </select>
                         </td>
                     </tr>
                 </tbody>
@@ -41,31 +46,33 @@
 
 
 
-        <section>
-            <table id="tableProduct">
+        <section id="sectionProduct">
+            <table id="tableProduct"> 
                 <thead>
                     <tr>
-                        <th colspan="2">Produto Valente</th>
-                        <th colspan="2" id="phase">Tabela R$ 140,00</th>
+                        <th colspan="2" >Produto Valente</th>
+                        <th colspan="2" id="phase" class="price">Tabela R$ 140,00</th>
                     </tr>
                     <tr>
-                        <th>Nome do produto</th>
-                        <th>Quantidade</th>
-                        <th>V. unid</th>
-                        <th>V. Total</th>
+                        <th >Nome do produto</th>
+                        <th >Quantidade</th>
+                        <th class="price">V. unid</th>
+                        <th class="price">V. Total</th>
                     </tr>
                 </thead>
                 <tbody id="produtos"></tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3">Total</td>
-                        <td id="soma">R$: 0</td>
+                        <td id="soma" >R$: 0</td>
                     </tr>
                     <tr>
                         <td colspan="3">Peso</td>
-                        <td id="peso">Kg: 0</td>
+                        <td id="peso" >Kg: 0</td>
                     </tr>
                 </tfoot>
+            
+    
             </table>
         </section>
 
@@ -73,13 +80,14 @@
             <div id="content">
                 <h1>Criar cadastro</h1>
                 <input type="text" placeholder="Numero" id="numero">
+                <input type="text" placeholder="Endereço" id="address">
                 <input type="text" placeholder="bairro" id="bairro">
                 <input type="text" placeholder="Cep"    id="cep">
                 <input type="text" placeholder="Cidade" id="cidade">
                 <input type="text" placeholder="Estado" id="estado">
                 <input type="text" placeholder="Tel"    id="tel">
                 <input type="text" placeholder="Email"  id="email">
-                <input type="text" placeholder="CPF ou CNPJ">
+                <input type="text" placeholder="CPF ou CNPJ" id="cpf">
                 <input type="button" value="enviar" onclick="createCadastro()">
                 <input type="button" value="Cancelar" onclick="cancel()">
             </div>
