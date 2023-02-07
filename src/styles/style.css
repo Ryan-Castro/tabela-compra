@@ -9,9 +9,9 @@ body{
     flex-direction: column;
 }
 main{
-    max-width: 800px;
+    max-width: 1200px;
     height: 100vh;
-    padding-top: 50px;
+    padding-top: 20px;
 }
 section{
     width: 100%;
@@ -27,7 +27,7 @@ section{
     padding-left: 10px;
 }
 #sectionProduct{
-    height: calc(100% - 300px);
+    height: calc(100% - 250px);
     overflow: auto;
 }
 #sectionProduct thead{
@@ -41,6 +41,9 @@ section{
 table{
     border-collapse: separate;
     border-spacing: 0px;
+}
+tbody{
+    position: relative;
 }
 td, th{
     border: .1px solid black;
@@ -90,7 +93,20 @@ button{
 .price{
     background-color: rgb(255, 255, 96);
 }
-
+.lable{
+    position: sticky;
+    top: 0px;
+}
+.center{
+    text-align: center;
+}
+#selectCategory{
+    width: 45%;
+    margin: 5px 20px;
+}
+#search{
+    width: 45%;
+}
 @media (max-width: 600px){
     table{
         overflow: scroll;

@@ -10,31 +10,87 @@
 <body>
     <header>
         <h1>Valente cosméticos</h1>
-        <button onclick="add()"><h1>Adicionar</h1></button>
+        <button onclick="addProduct()"><h1>Adicionar</h1></button>
     </header>
     <main>
     </main>
-    <div id="modal">
-        <div id="content"> 
+
+    <div id="modalSelect" class="modal">
+        <div id="contentSelect" class="contentModal">
+            <h1>Qual é o tipo de produto?</h1>
+            <button onclick="showAddPerValue()">Por Valor</button>
+            <button onclick="showAddPerUnit()">Por Unidade</button>
+            <button onclick="cancel()">Cancelar</button>
+        </div>
+    </div>
+
+
+
+    <div id="modalPerValue" class="modal">
+        <div id="contentPerValue" class="contentModal"> 
             <h1 id="titleFunction">Adicionar</h1>
-            <input type="text" id="name" placeholder="Nome">
-            <input type="number" id="weight" placeholder="Peso">
-            <input type="number" id="pBase" placeholder="Preço Base">
-            <input type="number" id="p300" placeholder="Preço a cima de 300">
-            <input type="number" id="p600" placeholder="Preço a cima de 300">
-            <input type="number" id="p1500" placeholder="Preço a cima de 300">
-            <input type="button" value="Enviar" onclick="send()">
-            <input type="hidden" id="productID">
+            <input type="text" id="namePerValue" placeholder="Nome">
+            <input type="number" id="itemIdPerValue" placeholder="Id">
+            <input type="number" id="weightPerValue" placeholder="Peso">
+            <input type="number" id="pBasePerValue" placeholder="Preço Base">
+            <input type="number" id="p300PerValue" placeholder="Preço a cima de 300">
+            <input type="number" id="p600PerValue" placeholder="Preço a cima de 600">
+            <input type="number" id="p1500PerValue" placeholder="Preço a cima de 1500">
+            <select id="selectItemPerValue">
+                <option value="Pomadas Modeladoras 150gr">Pomadas Modeladoras 150gr</option>
+                <option value="Pomadas Modeladoras 80gr">Pomadas Modeladoras 80gr</option>
+                <option value="Pomadas Modeladoras 25gr">Pomadas Modeladoras 25gr</option>
+                <option value="Gel">Gel</option>
+                <option value="Barba">Barba</option>
+                <option value="Linha MENTA e TEA TREE">Linha MENTA e TEA TREE</option>
+                <option value="Progressivas">Progressivas</option>
+                <option value="Kit linha perfime SH, Cond, Balm e óleo">Kit linha perfime SH, Cond, Balm e óleo</option>
+                <option value="Shampo Perfume">Shampo Perfume</option>
+                <option value="Condicionador Perfume">Condicionador Perfume</option>
+                <option value="Balm Perfume">Balm Perfume</option>
+                <option value="óleo Perfume">óleo Perfume</option>
+            </select>
+            <input type="button" value="Enviar" onclick="sendPerValue()">
+            <input type="hidden" id="productIDPerValue">
             <input type="button" value="Cancelar" onclick="cancel()">
         </div>
     </div>
-    <div id="modalDelet">
+
+
+    <div id="modalPerUnit" class="modal">
+        <div id="contentPerUnit" class="contentModal"> 
+            <h1 id="titleFunction">Adicionar</h1>
+            <input type="text" id="namePerUnit" placeholder="Nome">
+            <input type="number" id="itemIdPerUnit" placeholder="Id">
+            <input type="number" id="weightPerUnit" placeholder="Peso">
+            <section id="sectionPerUnit">
+                
+            </section>
+            <input type="button" value="Adicionar" onclick="addBrackPoint()">
+            <select id="selectItemPerUnit">
+                <option value="Minoxidil">Minoxidil</option>
+                <option value="Perfume Tradicional">Perfume Tradicional</option>
+                <option value="Perfime para barba com Minoxidil">Perfime para barba com Minoxidil</option>
+            </select>
+            <input type="button" value="Enviar" onclick="sendPerUnit()">
+            <input type="hidden" id="productIDPerUnit">
+            <input type="button" value="Cancelar" onclick="cancel()">
+        </div>
+    </div>
+
+
+    <div id="modalDelet" class="modal">
         <div id="confirmDelet"> 
             <h2>Deseja apagar:</h2>
             <input type="hidden" id="deletId">
             <input type="button" value="Apagar" onclick="delet()">
             <input type="button" value="Cancelar" onclick="cancel()">
         </div>
+    </div>
+    <div id="modalSelect">
+        <h1>qual</h1>
+        <button></button>
+
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

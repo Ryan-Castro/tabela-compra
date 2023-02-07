@@ -58,7 +58,7 @@ input{
     width: 200px;
     height: 30px;
 }
-#modal, #modalDelet{
+.modal{
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.285);
@@ -69,16 +69,33 @@ input{
     justify-content: center;
     align-items: center;
 }
-#content{
+.contentModal{
     background-color: white;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;    
     padding: 20px;
     gap: 10px;
+}
+#contentSelect button{
+    width: 90%;
+    font-size: 20px;
+}
+#contentPerValue{
     width: 400px;
 }
-#content input{
+#sectionPerUnit{
+    width: 90%;
+}
+#sectionPerUnit div{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+#sectionPerUnit input{
+    width: 40%;
+}
+.contentModal input, .contentModal select{
     width: 90%;
     padding: 5px 10px;
 }
@@ -91,6 +108,9 @@ input{
     gap: 10px;
     width: 250px;
     border-radius: 25px;
+}
+.warning{
+    background-color: rgb(237, 79, 79);
 }
 @media (max-width: 900px){
     .card>div{
