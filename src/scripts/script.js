@@ -20,7 +20,7 @@ let tHeadPerValue = `
         </td>
     </tr>   
     <tr class="lable">
-        <th>id</th>
+        <th>codigo</th>
         <th>Nome do produto</th>
         <th>Quantidade</th>
         <th class="price" colspan="2">V. unid</th>
@@ -34,7 +34,7 @@ let tHeadPerUnit = `
         </td>
     </tr> 
     <tr class="lable">
-    <th>id</th>
+        <th>código</th>
         <th>Nome do produto</th>
         <th>Quantidade</th>
         <th>V. min</th>

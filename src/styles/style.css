@@ -9,7 +9,8 @@ body{
     flex-direction: column;
 }
 main{
-    max-width: 1200px;
+    width: 100%;
+    max-width: 900px;
     height: 100vh;
     padding-top: 20px;
 }
@@ -27,8 +28,12 @@ section{
     padding-left: 10px;
 }
 #sectionProduct{
+    width: 100%;
     height: calc(100% - 250px);
     overflow: auto;
+}
+#tableProduct{
+    width: 100%;
 }
 #sectionProduct thead{
     position: sticky;

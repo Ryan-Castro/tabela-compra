@@ -151,8 +151,15 @@ function sendPerUnit(){
     let id = Number($("#itemIdPerUnit").value)
     let amount = []
     for( element of $("#sectionPerUnit").children){
-        let obj = {min: Number(element.children[0].value), price: Number(element.children[1].value)}
-        amount.push(obj)
+        if(element.children[0].value > 0){
+            let obj = {min: Number(element.children[0].value), price: Number(element.children[1].value)}
+            amount.push(obj)
+        }
+        amount.sort((a,b)=>{
+            if(a.min>b.min) return 1;
+            if(a.min<b.min) return -1;
+            return 0
+        })
     }
     if($("#productIDPerUnit").value == ""){
         db.collection("perUnit").add({
