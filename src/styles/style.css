@@ -12,7 +12,6 @@ main{
     width: 100%;
     max-width: 900px;
     height: 100vh;
-    padding-top: 20px;
 }
 section{
     width: 100%;
@@ -29,7 +28,7 @@ section{
 }
 #sectionProduct{
     width: 100%;
-    height: calc(100% - 250px);
+    height: calc(100% - 270px);
     overflow: auto;
 }
 #tableProduct{
@@ -115,17 +114,14 @@ button{
     padding: 10px;
     margin: 5px 0px;
 }
-@media (max-width: 600px){
-    table{
-        overflow: scroll;
-        width: 100%;
-    }
-    main{
-        width: 100vw;
-    }
+@media (max-width: 850px){
     td, th{
         font-size: 10px;
     }
+
+}
+@media (max-width: 660px){
+    
     #cad{
         width: 100vw;
         justify-content: flex-start;
@@ -140,8 +136,15 @@ button{
         width: 100%;
     }
 }
-@media (max-width: 400px){
+@media (max-width: 550px){
     td, th{
         padding: 5px;
+    }
+}
+
+
+@media (max-width: 410px){
+    td, th{
+        font-size: 7px;
     }
 }
