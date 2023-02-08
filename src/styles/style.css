@@ -104,13 +104,16 @@ button{
 }
 .center{
     text-align: center;
+    background-color: rgba(0, 0, 0, 0.283);
 }
-#selectCategory{
-    width: 45%;
-    margin: 5px 20px;
+.category{
+    background-color: aqua;
+    padding: 10px 20px;
 }
 #search{
-    width: 45%;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0px;
 }
 @media (max-width: 600px){
     table{
