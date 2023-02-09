@@ -371,7 +371,7 @@ function enviar(){
         shopp += `*${objPerUnit[id].name}*: ${shopping[2][id]} %0A`
     })
     location.href = `
-                    https://wa.me/5551998116453?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0A*Valor%20Total%20Sem%20o%20Frete*:%20R$${valueTot.toString().replace(".", ",")}%0A*Peso%20Total*:%20${weightTot.toString().replace(".", ",")}Kg%0AForma%20de%20Pagamento:%20${payment}%0A
+                    https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0A*Valor%20Total%20Sem%20o%20Frete*:%20R$${valueTot.toString().replace(".", ",")}%0A*Peso%20Total*:%20${weightTot.toString().replace(".", ",")}Kg%0AForma%20de%20Pagamento:%20${payment}%0A
                         `
 }
 
