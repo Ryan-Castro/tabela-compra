@@ -1,6 +1,6 @@
 let objPerValue = {}
 let objPerUnit = {}
-let shopping = [{},{}]
+let shopping = [{},{},{}]
 let tProd = $("#tableProduct")
 let tProdH = tProd.children[0]
 let tProdB = tProd.children[1]
@@ -28,7 +28,6 @@ let categoriesPerValue = [
     "óleo Perfume"
 ]
 let categoriesPerUnit = [
-    "Minoxidil",
     "Perfume Tradicional",
     "Perfime para barba com Minoxidil"
 ]
@@ -39,7 +38,7 @@ let tHeadPerValue = `
         </td>
     </tr>   
     <tr class="lable">
-        <th>codigo</th>
+        <th>código</th>
         <th>Nome do produto</th>
         <th>Quantidade</th>
         <th class="price" colspan="2">V. unid</th>
@@ -92,7 +91,7 @@ function listing(){
                 tProdB.innerHTML += `<tr id="item-${produto}">
                                         <td>${objPerValue[produto].id}</td>
                                         <td>${objPerValue[produto].name}</td>
-                                        <td class="tdInput"><input type="number" onInput="updateItemPerValue('${produto}')" min="0" value="${shopping[0][produto]?shopping[0][produto]:''}"/></td>
+                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 0)" min="0" value="${shopping[0][produto]?shopping[0][produto]:''}"/></td>
                                         <td class="price" colspan="2">${objPerValue[produto].preçoBase.toFixed(2)}</td>
                                         <td class="price"></td>
                                     </tr>`
@@ -100,41 +99,54 @@ function listing(){
         })
     })
     tProdB.innerHTML += tHeadPerUnit
+    tProdB.innerHTML += `   <tr>
+                                    <td colspan="6" class="category">Minoxidil</td>
+                            </tr>`
+    Object.keys(objPerUnit).forEach((produto, i)=>{
+        if(objPerUnit[produto].category == "Minoxidil"){
+        tProdB.innerHTML += `<tr id="item-${produto}">
+                                <td>${objPerUnit[produto].id}</td>
+                                <td>${objPerUnit[produto].name}</td>
+                                <td class="tdInput"><input type="number" onInput="update('${produto}', 1)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[1][produto]?shopping[1][produto]:''}"/></td>
+                                <td>${objPerUnit[produto].amount[0].min}</td>
+                                <td>${objPerUnit[produto].amount[0].price}</td>
+                                <td></td>
+                            </tr>` }
+    })
     categoriesPerUnit.forEach((category)=>{
         tProdB.innerHTML += `   <tr>
-                                    <td colspan="6" class="category">${category}</td>
+                                    <td colspan="3" class="category">${category}</td>
+                                    <td class="category">Quan.</td>
+                                    <td colspan="2" class="category" id="amountPerfume">0</td>
                                 </tr>`
         Object.keys(objPerUnit).forEach((produto, i)=>{
-           if(objPerUnit[produto].category == category){
-            tProdB.innerHTML += `<tr id="item-${produto}">
-                                    <td>${objPerUnit[produto].id}</td>
-                                    <td>${objPerUnit[produto].name}</td>
-                                    <td class="tdInput"><input type="number" onInput="updateItemPerUnit('${produto}')" min="${objPerUnit[produto].amount[0].min}" value="${shopping[1][produto]?shopping[1][produto]:''}"/></td>
-                                    <td>${objPerUnit[produto].amount[0].min}</td>
-                                    <td>${objPerUnit[produto].amount[0].price}</td>
-                                    <td></td>
-                                </tr>` }
+            if(objPerUnit[produto].category == category){
+                tProdB.innerHTML += `<tr id="item-${produto}">
+                                        <td>${objPerUnit[produto].id}</td>
+                                        <td>${objPerUnit[produto].name}</td>
+                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 2)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[2][produto]?shopping[2][produto]:''}"/></td>
+                                        <td>${objPerUnit[produto].amount[0].min}</td>
+                                        <td>${objPerUnit[produto].amount[0].price}</td>
+                                        <td></td>
+                                    </tr>` 
+            }
         })
-
     })
 }
 
 
 
-function updateItemPerValue(id){
-    shopping[0][id] = $(`#item-${id}`).children[2].children[0].value
-    $("#phase").innerHTML = "Tabala R$ 140,00"
-    calculate("preçoBase", "rgb(255, 255, 96)")
-}
-function updateItemPerUnit(id){
-    shopping[1][id] = $(`#item-${id}`).children[2].children[0].value
+function update(id, numArrey){
+    shopping[numArrey][id] = $(`#item-${id}`).children[2].children[0].value
     $("#phase").innerHTML = "Tabala R$ 140,00"
     calculate("preçoBase", "rgb(255, 255, 96)")
 }
 
+
 function calculate(basePrice, color){
     valueTot = Number(calculatePerValue(basePrice))     
     valueTot += Number(calculatePerUnit())    
+    valueTot += Number(calculatePerfume())    
     weightTot = Number(calculateWeight())
     Object.keys(objPerValue).forEach((produto, i)=>{
         if($(`#item-${produto}`))
@@ -177,6 +189,32 @@ function calculatePerUnit(){
     })
     return valueReturn
 }
+
+function calculatePerfume(){
+    let valueReturn = 0
+    let amountPerfume = 0
+    Object.keys(shopping[2]).forEach((id)=>{
+        amountPerfume += Number(shopping[2][id])
+    })
+    Object.keys(shopping[2]).forEach((id)=>{
+        let value = 0
+        objPerUnit[id].amount.forEach(breakPoint=>{
+            if(breakPoint.min<=amountPerfume){
+                value = (breakPoint.price * shopping[2][id]).toFixed(2)
+                if($(`#item-${id}`)){
+                    $(`#item-${id}`).children[3].innerHTML = breakPoint.min
+                    $(`#item-${id}`).children[4].innerHTML = breakPoint.price
+                    $(`#item-${id}`).children[5].innerHTML = value
+                }
+            }
+        })
+        valueReturn += Number(value)
+    })
+    document.querySelectorAll("#amountPerfume").forEach(element=>{
+        element.innerHTML= amountPerfume
+    })
+    return valueReturn
+}
 function calculateWeight(){
     let valueReturn = 0
     Object.keys(shopping[0]).forEach((id)=>{
@@ -185,6 +223,10 @@ function calculateWeight(){
     })
     Object.keys(shopping[1]).forEach((id)=>{
         let value = objPerUnit[id]['weight'] * shopping[1][id]
+        valueReturn += Number(value)
+    })
+    Object.keys(shopping[2]).forEach((id)=>{
+        let value = objPerUnit[id]['weight'] * shopping[2][id]
         valueReturn += Number(value)
     })
     return valueReturn
@@ -206,6 +248,19 @@ function checkPriceBase(basePrice){
             })
             valueCalc += Number(value)
         })
+        let amountPerfume = 0
+        Object.keys(shopping[2]).forEach((id)=>{
+            amountPerfume += Number(shopping[2][id])
+        })
+        Object.keys(shopping[2]).forEach((id)=>{
+            let value = 0
+            objPerUnit[id].amount.forEach(breakPoint=>{
+                if(breakPoint.min<=amountPerfume){
+                    value = (breakPoint.price * shopping[2][id]).toFixed(2)
+                }
+            })
+            valueCalc += Number(value)
+        })
         if(valueCalc >= baseObj.min && basePrice == baseObj.before){
             $("#phase").innerHTML = baseObj.title
             calculate(baseObj.base, baseObj.color)
@@ -221,25 +276,44 @@ function searchItem(){
                         <tr id="item-${item}">
                             <td>${objPerValue[item].id}</td>
                             <td>${objPerValue[item].name}</td>
-                            <td class="tdInput"><input type="number" onInput="updateItemPerValue('${item}')" min="0" value="${shopping[0][item]?shopping[0][item]:''}"/></td>
+                            <td class="tdInput"><input type="number" onInput="update('${item}', 0)" min="0" value="${shopping[0][item]?shopping[0][item]:''}"/></td>
                             <td class="price" colspan="2">${objPerValue[item].preçoBase.toFixed(2)}</td>
                             <td class="price"></td>
                         </tr>`
         }
     })
     tProdB.innerHTML += tHeadPerUnit
+    
     Object.keys(objPerUnit).forEach(item=>{
         if(objPerUnit[item].name.toLowerCase().includes($('#search').value.toLowerCase())){
-            tProdB.innerHTML += `<tr id="item-${item}">
-                <td>${objPerUnit[item].id}</td>
-                <td>${objPerUnit[item].name}</td>
-                <td class="tdInput"><input type="number" onInput="updateItemPerUnit('${item}')" min="${objPerUnit[item].amount[0].min}" value="${shopping[1][item]?shopping[1][item]:''}"/></td>
-                <td>${objPerUnit[item].amount[0].min}</td>
-                <td>${objPerUnit[item].amount[0].price}</td>
-                <td></td>
-            </tr>` 
+            if(objPerUnit[item].category == "Minoxidil"){
+                tProdB.innerHTML += `<tr id="item-${item}">
+                                        <td>${objPerUnit[item].id}</td>
+                                        <td>${objPerUnit[item].name}</td>
+                                        <td class="tdInput"><input type="number" onInput="update('${item}', 1)" min="${objPerUnit[item].amount[0].min}" value="${shopping[1][item]?shopping[1][item]:''}"/></td>
+                                        <td>${objPerUnit[item].amount[0].min}</td>
+                                        <td>${objPerUnit[item].amount[0].price}</td>
+                                        <td></td>
+                                    </tr>` 
+            }
+        }
+    })
+    categoriesPerUnit.forEach((category)=>{
+        Object.keys(objPerUnit).forEach((item, i)=>{
+            if(objPerUnit[item].name.toLowerCase().includes($('#search').value.toLowerCase())){
+                if(objPerUnit[item].category == category){
+                    tProdB.innerHTML += `<tr id="item-${item}">
+                                            <td>${objPerUnit[item].id}</td>
+                                            <td>${objPerUnit[item].name}</td>
+                                            <td class="tdInput"><input type="number" onInput="update('${item}', 2)" min="${objPerUnit[item].amount[0].min}" value="${shopping[2][item]?shopping[2][item]:''}"/></td>
+                                            <td>${objPerUnit[item].amount[0].min}</td>
+                                            <td>${objPerUnit[item].amount[0].price}</td>
+                                            <td></td>
+                                        </tr>` 
+                }
             }
         })
+    })
     if($('#search').value == ""){
         listing()
     }
@@ -291,6 +365,10 @@ function enviar(){
     Object.keys(shopping[1]).forEach((id)=>{
         if(shopping[1][id]>0)
         shopp += `*${objPerUnit[id].name}*: ${shopping[1][id]} %0A`
+    })
+    Object.keys(shopping[2]).forEach((id)=>{
+        if(shopping[2][id]>0)
+        shopp += `*${objPerUnit[id].name}*: ${shopping[2][id]} %0A`
     })
     location.href = `
                     https://wa.me/5551998116453?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0A*Valor%20Total%20Sem%20o%20Frete*:%20R$${valueTot.toString().replace(".", ",")}%0A*Peso%20Total*:%20${weightTot.toString().replace(".", ",")}Kg%0AForma%20de%20Pagamento:%20${payment}%0A

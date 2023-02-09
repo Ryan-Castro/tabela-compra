@@ -114,6 +114,9 @@ button{
     padding: 10px;
     margin: 5px 0px;
 }
+#amountPerfume{
+    text-align: end;
+}
 @media (max-width: 850px){
     td, th{
         font-size: 10px;
