@@ -335,6 +335,11 @@ function check(){
         $("#modal").style.display = "flex"
         return
     }
+    $("#modalCep").style.display = "flex"
+}
+function confirmCep(){
+    let confirmCep = $("#confirmCep").value
+    form = `*CEP*:%20${confirmCep}%0A`
     enviar()
 }
 

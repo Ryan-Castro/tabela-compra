@@ -80,7 +80,15 @@
                 <input type="text" placeholder="Tel"    id="tel">
                 <input type="text" placeholder="Email"  id="email">
                 <input type="text" placeholder="CPF ou CNPJ" id="cpf">
-                <input type="button" value="enviar" onclick="createCadastro()">
+                <input type="button" value="Enviar" onclick="createCadastro()">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+        <div id="modalCep" class="modal">
+            <div id="contentCep">
+                <h1>Confirmar o CEP</h1>
+                <input type="text" placeholder="Cep" id="confirmCep">
+                <input type="button" value="Enviar" onclick="confirmCep()">
                 <input type="button" value="Cancelar" onclick="cancel()">
             </div>
         </div>
