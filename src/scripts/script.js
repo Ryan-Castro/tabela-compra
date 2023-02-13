@@ -9,9 +9,9 @@ let valueTot = 0
 let weightTot = 0 
 let form = ""
 let basePriceArrey = [
-    {base:"preço300", min:300, before:"preçoBase", title:"Tabala R$ 300,00", color:"orange"}, 
-    {base:"preço600", min:600, before:"preço300", title:"Tabala R$ 600,00", color:"rgb(46, 255, 46)"}, 
-    {base:"preço1500", min:1500, before:"preço600", title:"Tabala R$ 1500,00", color:"cyan"}
+    {base:"preço300", min:300, before:"preçoBase", title:"Tabala R$ 300,00", color:"#2296D3"}, 
+    {base:"preço600", min:600, before:"preço300", title:"Tabala R$ 600,00", color:"#3A917E"}, 
+    {base:"preço1500", min:1500, before:"preço600", title:"Tabala R$ 1500,00", color:"#6155FF"}
 ]
 let categoriesPerValue = [ 
     "Pomadas Modeladoras 150gr", 
@@ -91,8 +91,8 @@ function listing(){
                 tProdB.innerHTML += `<tr id="item-${produto}">
                                         <td>${objPerValue[produto].id}</td>
                                         <td>${objPerValue[produto].name}</td>
-                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 0)" min="0" value="${shopping[0][produto]?shopping[0][produto]:''}"/></td>
-                                        <td class="price" colspan="2">${objPerValue[produto].preçoBase.toFixed(2)}</td>
+                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 0)" min="0" value="${shopping[0][produto]?shopping[0][produto].unit:''}"/></td>
+                                        <td class="price" colspan="2">${objPerValue[produto].preçoBase.toFixed(2).replace(".", ",")}</td>
                                         <td class="price"></td>
                                     </tr>`
             }
@@ -107,9 +107,9 @@ function listing(){
         tProdB.innerHTML += `<tr id="item-${produto}">
                                 <td>${objPerUnit[produto].id}</td>
                                 <td>${objPerUnit[produto].name}</td>
-                                <td class="tdInput"><input type="number" onInput="update('${produto}', 1)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[1][produto]?shopping[1][produto]:''}"/></td>
+                                <td class="tdInput"><input type="number" onInput="update('${produto}', 1)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[1][produto]?shopping[1][produto].unit:''}"/></td>
                                 <td>${objPerUnit[produto].amount[0].min}</td>
-                                <td>${objPerUnit[produto].amount[0].price}</td>
+                                <td>${objPerUnit[produto].amount[0].price.toFixed(2).replace(".", ",")}</td>
                                 <td></td>
                             </tr>` }
     })
@@ -124,9 +124,9 @@ function listing(){
                 tProdB.innerHTML += `<tr id="item-${produto}">
                                         <td>${objPerUnit[produto].id}</td>
                                         <td>${objPerUnit[produto].name}</td>
-                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 2)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[2][produto]?shopping[2][produto]:''}"/></td>
+                                        <td class="tdInput"><input type="number" onInput="update('${produto}', 2)" min="${objPerUnit[produto].amount[0].min}" value="${shopping[2][produto]?shopping[2][produto].unit:''}"/></td>
                                         <td>${objPerUnit[produto].amount[0].min}</td>
-                                        <td>${objPerUnit[produto].amount[0].price}</td>
+                                        <td>${objPerUnit[produto].amount[0].price.toFixed(2).replace(".", ",")}</td>
                                         <td></td>
                                     </tr>` 
             }
@@ -137,9 +137,9 @@ function listing(){
 
 
 function update(id, numArrey){
-    shopping[numArrey][id] = $(`#item-${id}`).children[2].children[0].value
+    shopping[numArrey][id] = {unit: $(`#item-${id}`).children[2].children[0].value}
     $("#phase").innerHTML = "Tabala R$ 140,00"
-    calculate("preçoBase", "rgb(255, 255, 96)")
+    calculate("preçoBase", "#CCBC2D")
 }
 
 
@@ -150,10 +150,10 @@ function calculate(basePrice, color){
     weightTot = Number(calculateWeight())
     Object.keys(objPerValue).forEach((produto, i)=>{
         if($(`#item-${produto}`))
-        $(`#item-${produto}`).children[3].innerHTML = objPerValue[produto][basePrice].toFixed(2) 
+        $(`#item-${produto}`).children[3].innerHTML = objPerValue[produto][basePrice].toFixed(2).replace(".", ",") 
     })
-    $(`#soma`).innerHTML = `R$: ${valueTot.toFixed(2)}`
-    $(`#weight`).innerHTML = `Kg: ${weightTot.toFixed(3)}`
+    $(`#soma`).innerHTML = `R$: ${valueTot.toFixed(2).replace(".", ",") }`
+    $(`#weight`).innerHTML = `Kg: ${weightTot.toFixed(3).replace(".", ",") }`
     document.querySelectorAll(".price").forEach(element=>{
         element.style.backgroundColor = color
     })
@@ -164,9 +164,10 @@ function calculate(basePrice, color){
 function calculatePerValue(basePrice){
     let valueReturn = 0
     Object.keys(shopping[0]).forEach((id)=>{
-        let value = objPerValue[id][basePrice] * shopping[0][id]
+        let value = objPerValue[id][basePrice] * shopping[0][id].unit
+        shopping[0][id].price = value
         valueReturn += Number(value)
-        $(`#item-${id}`).children[4].innerHTML = value.toFixed(2) 
+        $(`#item-${id}`).children[4].innerHTML = value.toFixed(2).replace(".", ",") 
     })
     return valueReturn
 }
@@ -176,12 +177,13 @@ function calculatePerUnit(){
     Object.keys(shopping[1]).forEach((id)=>{
         let value = 0
         objPerUnit[id].amount.forEach(breakPoint=>{
-            if(breakPoint.min<=shopping[1][id]){
-                value = (breakPoint.price * shopping[1][id]).toFixed(2)
+            if(breakPoint.min<=shopping[1][id].unit){
+                value = (breakPoint.price * shopping[1][id].unit).toFixed(2)
+                shopping[1][id].price = value
                 if($(`#item-${id}`)){
                     $(`#item-${id}`).children[3].innerHTML = breakPoint.min
-                    $(`#item-${id}`).children[4].innerHTML = breakPoint.price
-                    $(`#item-${id}`).children[5].innerHTML = value
+                    $(`#item-${id}`).children[4].innerHTML = breakPoint.price.toFixed(2).replace(".", ",") 
+                    $(`#item-${id}`).children[5].innerHTML = Number(value).toFixed(2).replace(".", ",") 
                 }
             }
         })
@@ -194,17 +196,18 @@ function calculatePerfume(){
     let valueReturn = 0
     let amountPerfume = 0
     Object.keys(shopping[2]).forEach((id)=>{
-        amountPerfume += Number(shopping[2][id])
+        amountPerfume += Number(shopping[2][id].unit)
     })
     Object.keys(shopping[2]).forEach((id)=>{
         let value = 0
         objPerUnit[id].amount.forEach(breakPoint=>{
             if(breakPoint.min<=amountPerfume){
-                value = (breakPoint.price * shopping[2][id]).toFixed(2)
+                value = (breakPoint.price * shopping[2][id].unit).toFixed(2)
+                shopping[2][id].price = value
                 if($(`#item-${id}`)){
                     $(`#item-${id}`).children[3].innerHTML = breakPoint.min
-                    $(`#item-${id}`).children[4].innerHTML = breakPoint.price
-                    $(`#item-${id}`).children[5].innerHTML = value
+                    $(`#item-${id}`).children[4].innerHTML = breakPoint.price.toFixed(2).replace(".", ",") 
+                    $(`#item-${id}`).children[5].innerHTML = Number(value).toFixed(2).replace(".", ",") 
                 }
             }
         })
@@ -218,15 +221,15 @@ function calculatePerfume(){
 function calculateWeight(){
     let valueReturn = 0
     Object.keys(shopping[0]).forEach((id)=>{
-        let value = objPerValue[id]['weight'] * shopping[0][id]
+        let value = objPerValue[id]['weight'] * shopping[0][id].unit
         valueReturn += Number(value)
     })
     Object.keys(shopping[1]).forEach((id)=>{
-        let value = objPerUnit[id]['weight'] * shopping[1][id]
+        let value = objPerUnit[id]['weight'] * shopping[1][id].unit
         valueReturn += Number(value)
     })
     Object.keys(shopping[2]).forEach((id)=>{
-        let value = objPerUnit[id]['weight'] * shopping[2][id]
+        let value = objPerUnit[id]['weight'] * shopping[2][id].unit
         valueReturn += Number(value)
     })
     return valueReturn
@@ -236,27 +239,27 @@ function checkPriceBase(basePrice){
     basePriceArrey.forEach(baseObj=>{
         let valueCalc = 0
         Object.keys(shopping[0]).forEach((id)=>{
-            let value = objPerValue[id][baseObj.base] * shopping[0][id]
+            let value = objPerValue[id][baseObj.base] * shopping[0][id].unit
             valueCalc += value
         })   
         Object.keys(shopping[1]).forEach((id)=>{
             let value = 0
             objPerUnit[id].amount.forEach(breakPoint=>{
-                if(breakPoint.min<=shopping[1][id]){
-                    value = (breakPoint.price * shopping[1][id]).toFixed(2)
+                if(breakPoint.min<=shopping[1][id].unit){
+                    value = (breakPoint.price * shopping[1][id].unit).toFixed(2)
                 }
             })
             valueCalc += Number(value)
         })
         let amountPerfume = 0
         Object.keys(shopping[2]).forEach((id)=>{
-            amountPerfume += Number(shopping[2][id])
+            amountPerfume += Number(shopping[2][id].unit)
         })
         Object.keys(shopping[2]).forEach((id)=>{
             let value = 0
             objPerUnit[id].amount.forEach(breakPoint=>{
                 if(breakPoint.min<=amountPerfume){
-                    value = (breakPoint.price * shopping[2][id]).toFixed(2)
+                    value = (breakPoint.price * shopping[2][id].unit).toFixed(2)
                 }
             })
             valueCalc += Number(value)
@@ -276,7 +279,7 @@ function searchItem(){
                         <tr id="item-${item}">
                             <td>${objPerValue[item].id}</td>
                             <td>${objPerValue[item].name}</td>
-                            <td class="tdInput"><input type="number" onInput="update('${item}', 0)" min="0" value="${shopping[0][item]?shopping[0][item]:''}"/></td>
+                            <td class="tdInput"><input type="number" onInput="update('${item}', 0)" min="0" value="${shopping[0][item]?shopping[0][item].unit:''}"/></td>
                             <td class="price" colspan="2">${objPerValue[item].preçoBase.toFixed(2)}</td>
                             <td class="price"></td>
                         </tr>`
@@ -290,7 +293,7 @@ function searchItem(){
                 tProdB.innerHTML += `<tr id="item-${item}">
                                         <td>${objPerUnit[item].id}</td>
                                         <td>${objPerUnit[item].name}</td>
-                                        <td class="tdInput"><input type="number" onInput="update('${item}', 1)" min="${objPerUnit[item].amount[0].min}" value="${shopping[1][item]?shopping[1][item]:''}"/></td>
+                                        <td class="tdInput"><input type="number" onInput="update('${item}', 1)" min="${objPerUnit[item].amount[0].min}" value="${shopping[1][item]?shopping[1][item].unit:''}"/></td>
                                         <td>${objPerUnit[item].amount[0].min}</td>
                                         <td>${objPerUnit[item].amount[0].price}</td>
                                         <td></td>
@@ -305,7 +308,7 @@ function searchItem(){
                     tProdB.innerHTML += `<tr id="item-${item}">
                                             <td>${objPerUnit[item].id}</td>
                                             <td>${objPerUnit[item].name}</td>
-                                            <td class="tdInput"><input type="number" onInput="update('${item}', 2)" min="${objPerUnit[item].amount[0].min}" value="${shopping[2][item]?shopping[2][item]:''}"/></td>
+                                            <td class="tdInput"><input type="number" onInput="update('${item}', 2)" min="${objPerUnit[item].amount[0].min}" value="${shopping[2][item]?shopping[2][item].unit:''}"/></td>
                                             <td>${objPerUnit[item].amount[0].min}</td>
                                             <td>${objPerUnit[item].amount[0].price}</td>
                                             <td></td>
@@ -364,19 +367,19 @@ function enviar(){
     let shopp = ""
     let payment = $("#payment").options[$("#payment").selectedIndex].value
     Object.keys(shopping[0]).forEach((id)=>{
-        if(shopping[0][id]>0)
-        shopp += `${objPerValue[id].name}: *${shopping[0][id]}*%0A`
+        if(shopping[0][id].unit>0)
+        shopp += `${objPerValue[id].name}:%0A     Quatidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[1]).forEach((id)=>{
-        if(shopping[1][id]>0)
-        shopp += `${objPerUnit[id].name}: *${shopping[1][id]}*%0A`
+        if(shopping[1][id].unit>0)
+        shopp += `${objPerUnit[id].name}:%0A     Quatidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[2]).forEach((id)=>{
-        if(shopping[2][id]>0)
-        shopp += `${objPerUnit[id].name}: *${shopping[2][id]}* %0A`
+        if(shopping[2][id].unit>0)
+        shopp += `${objPerUnit[id].name}:%0A     Quatidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
-                    https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0A*Valor%20Total%20Sem%20o%20Frete*:%20R$${valueTot.toFixed(2).toString().replace(".", ",")}%0A*Peso%20Total*:%20${weightTot.toFixed(2).toString().replace(".", ",")}Kg%0AForma%20de%20Pagamento:%20${payment}%0A
+                    https://wa.me/5551998116453?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
                         `
 }
 
