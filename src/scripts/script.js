@@ -342,6 +342,10 @@ function check(){
 }
 function confirmCep(){
     let confirmCep = $("#confirmCep").value
+    if(confirmCep == ""){
+        alert("Preencha com o seu CEP")
+        return
+    }
     form = `*CEP*:%20${confirmCep}%0A`
     enviar()
 }
