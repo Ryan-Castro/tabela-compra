@@ -13,7 +13,9 @@ let basePriceArrey = [
     {base:"preço600", min:600, before:"preço300", title:"Tabala R$ 600,00", color:"#3A917E"}, 
     {base:"preço1500", min:1500, before:"preço600", title:"Tabala R$ 1500,00", color:"#6155FF"}
 ]
+
 let categoriesPerValue = [
+    "Fixadores",
     "Gel",
     "Barba",
     "Linha MENTA e TEA TREE",
@@ -22,9 +24,9 @@ let categoriesPerValue = [
     "Shampo Perfume",
     "Condicionador Perfume",
     "Balm Perfume",
-    "óleo Perfume",
-    "Fixadores"
+    "óleo Perfume"
 ]
+
 let categoriesPerUnit = [
     "Perfume Tradicional",
     "Perfime para barba com Minoxidil"
@@ -98,7 +100,7 @@ function listing(){
     })
     tProdB.innerHTML += tHeadPerUnit
     tProdB.innerHTML += `   <tr>
-                                    <td colspan="6" class="category">Minoxidil</td>
+                                <td colspan="6" class="category">Minoxiplus</td>
                             </tr>`
     Object.keys(objPerUnit).forEach((produto, i)=>{
         if(objPerUnit[produto].category == "Minoxidil"){
