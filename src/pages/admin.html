@@ -37,9 +37,6 @@
             <input type="number" id="p600PerValue" placeholder="Preço a cima de 600">
             <input type="number" id="p1500PerValue" placeholder="Preço a cima de 1500">
             <select id="selectItemPerValue">
-                <option value="Pomadas Modeladoras 150gr">Pomadas Modeladoras 150gr</option>
-                <option value="Pomadas Modeladoras 80gr">Pomadas Modeladoras 80gr</option>
-                <option value="Pomadas Modeladoras 25gr">Pomadas Modeladoras 25gr</option>
                 <option value="Gel">Gel</option>
                 <option value="Barba">Barba</option>
                 <option value="Linha MENTA e TEA TREE">Linha MENTA e TEA TREE</option>
@@ -49,6 +46,7 @@
                 <option value="Condicionador Perfume">Condicionador Perfume</option>
                 <option value="Balm Perfume">Balm Perfume</option>
                 <option value="óleo Perfume">óleo Perfume</option>
+                <option value="Fixadores">Fixadores</option>
             </select>
             <input type="button" value="Enviar" onclick="sendPerValue()">
             <input type="hidden" id="productIDPerValue">
@@ -86,11 +84,6 @@
             <input type="button" value="Apagar" onclick="delet()">
             <input type="button" value="Cancelar" onclick="cancel()">
         </div>
-    </div>
-    <div id="modalSelect">
-        <h1>qual</h1>
-        <button></button>
-
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
