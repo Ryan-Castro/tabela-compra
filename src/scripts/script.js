@@ -9,27 +9,29 @@ let valueTot = 0
 let weightTot = 0 
 let form = ""
 let basePriceArrey = [
-    {base:"preço300", min:300, before:"preçoBase", title:"Tabala R$ 300,00", color:"#2296D3"}, 
-    {base:"preço600", min:600, before:"preço300", title:"Tabala R$ 600,00", color:"#3A917E"}, 
-    {base:"preço1500", min:1500, before:"preço600", title:"Tabala R$ 1500,00", color:"#6155FF"}
+    {base:"preço300", min:300, before:"preçoBase", title:"Tabela R$ 300,00", color:"#2296D3"}, 
+    {base:"preço600", min:600, before:"preço300", title:"Tabela R$ 600,00", color:"#3A917E"}, 
+    {base:"preço1500", min:1500, before:"preço600", title:"Tabela R$ 1500,00", color:"#6155FF"}
 ]
 
 let categoriesPerValue = [
-    "Fixadores",
+    "Pomadas Modeladoras 150gr",
+    "Pomadas Modeladoras 80gr",
+    "Pomadas Modeladoras 25gr",
     "Gel",
     "Barba",
     "Linha MENTA e TEA TREE",
     "Progressivas",
-    "Kit linha perfime SH, Cond, Balm e óleo",
+    "Kit linha perfume SH, Cond, Balm e óleo",
     "Shampo Perfume",
     "Condicionador Perfume",
     "Balm Perfume",
-    "óleo Perfume"
+    "Óleo Perfume"
 ]
 
 let categoriesPerUnit = [
     "Perfume Tradicional",
-    "Perfime para barba com Minoxidil"
+    "Perfume para barba com Minoxiplus"
 ]
 let tHeadPerValue = `
     <tr>
@@ -103,7 +105,7 @@ function listing(){
                                 <td colspan="6" class="category">Minoxiplus</td>
                             </tr>`
     Object.keys(objPerUnit).forEach((produto, i)=>{
-        if(objPerUnit[produto].category == "Minoxidil"){
+        if(objPerUnit[produto].category == "Minoxiplus"){
         tProdB.innerHTML += `<tr id="item-${produto}">
                                 <td>${objPerUnit[produto].id}</td>
                                 <td>${objPerUnit[produto].name}</td>
@@ -138,7 +140,7 @@ function listing(){
 
 function update(id, numArrey){
     shopping[numArrey][id] = {unit: $(`#item-${id}`).children[2].children[0].value}
-    $("#phase").innerHTML = "Tabala R$ 140,00"
+    $("#phase").innerHTML = "Tabela R$ 140,00"
     calculate("preçoBase", "#CCBC2D")
 }
 
@@ -289,7 +291,7 @@ function searchItem(){
     
     Object.keys(objPerUnit).forEach(item=>{
         if(objPerUnit[item].name.toLowerCase().includes($('#search').value.toLowerCase())){
-            if(objPerUnit[item].category == "Minoxidil"){
+            if(objPerUnit[item].category == "Minoxiplus"){
                 tProdB.innerHTML += `<tr id="item-${item}">
                                         <td>${objPerUnit[item].id}</td>
                                         <td>${objPerUnit[item].name}</td>
@@ -372,15 +374,15 @@ function enviar(){
     let payment = $("#payment").options[$("#payment").selectedIndex].value
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
-        shopp += `${objPerValue[id].name}:%0A     Quatidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerValue[id].name}:%0A     Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[1]).forEach((id)=>{
         if(shopping[1][id].unit>0)
-        shopp += `${objPerUnit[id].name}:%0A     Quatidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerUnit[id].name}:%0A     Quantidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[2]).forEach((id)=>{
         if(shopping[2][id].unit>0)
-        shopp += `${objPerUnit[id].name}:%0A     Quatidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerUnit[id].name}:%0A     Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
                     https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
