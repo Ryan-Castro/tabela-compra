@@ -374,15 +374,15 @@ function enviar(){
     let payment = $("#payment").options[$("#payment").selectedIndex].value
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
-        shopp += `${objPerValue[id].name}:%0A     Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerValue[id].name} (${objPerValue[id].id}):%0A     Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[1]).forEach((id)=>{
         if(shopping[1][id].unit>0)
-        shopp += `${objPerUnit[id].name}:%0A     Quantidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerUnit[id].name} (${objPerUnit[id].id}):%0A     Quantidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[2]).forEach((id)=>{
         if(shopping[2][id].unit>0)
-        shopp += `${objPerUnit[id].name}:%0A     Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `${objPerUnit[id].name} (${objPerUnit[id].id}):%0A     Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
                     https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
