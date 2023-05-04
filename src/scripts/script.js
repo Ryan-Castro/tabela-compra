@@ -25,7 +25,8 @@ let categoriesPerValue = [
     "Kit linha perfume SH, Cond, Balm e óleo",
     "Shampo Perfume",
     "Condicionador Perfume",
-    "Balm Perfume",
+    "Balm Perfume 150Gr",
+    "Balm Perfume 80Gr",
     "Óleo Perfume"
 ]
 
