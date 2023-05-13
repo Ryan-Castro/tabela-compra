@@ -79,16 +79,62 @@
                 <input type="text" placeholder="Tel"    id="tel">
                 <input type="text" placeholder="Email"  id="email">
                 <input type="text" placeholder="CPF ou CNPJ" id="cpf">
-                <input type="button" value="Enviar" onclick="createCadastro()">
+                <input type="button" value="Criar conta" onclick="createCadastro()">
                 <input type="button" value="Cancelar" onclick="cancel()">
             </div>
         </div>
         <div id="modalCep" class="modal">
             <div id="contentCep">
-                <h1>Confirmar o CEP</h1>
-                <input type="text" placeholder="Cep" id="confirmCep">
-                <input type="button" value="Enviar" onclick="confirmCep()">
+                <h1>Confirmar o CPF</h1>
+                <input type="text" placeholder="cpf" id="confirmCpf">
+                <input type="button" value="Enviar" onclick="confirmCpf()">
                 <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="modalSave" class="modal">
+            <div id="contentSave">
+                <h1>Deseja continuar com a compra</h1>
+                <input type="button" value="Sim" onclick="saveLocalStore()">
+                <input type="button" value="Não" onclick="descartLocalStore()">
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <input type="hidden" id="BaseCep">
+
+
+        <div id="modalSelectFreight" class="modal">
+            <div id="contentSelectFreight">
+                <h2>Seu cep é: xxxx.xxxx-xxx</h2>
+                <h3>Escolha o meio de frete</h3>
+                <input type="button" value="Calcular frete" onclick="showCalc()">
+                <input type="button" value="Onibus Brás" onclick="showBras()">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="modalConfirmCalcFreight" class="modal">
+            <div id="contentConfirmCalcFreight">
+                <h2>Tem alguma outra transportadora de preferencia?</h2>
+                <input type="text" value="Nenhuma" placeholder="Nenhuma" id="freightPref">
+                <input type="button" value="Confirmar pedido com transportadora de preferencia" onclick="calcFreift()">
+                <input type="button" value="voltar" onclick="showSelectFreight()">
+            </div>
+        </div>
+
+        <div id="modalConfirmBras" class="modal">
+            <div id="contentConfirmBras">
+                <h2>Via Brás, R$ 30,00 por cada caixa de 25kg</h2>
+                <ul id="listBras"></ul>
+                <input type="button" value="Confirmar pedido via Onibus Brás" onclick="confirmBras()">
+                <input type="button" value="Voltar" onclick="showSelectFreight()">
             </div>
         </div>
 

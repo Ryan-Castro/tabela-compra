@@ -66,6 +66,20 @@ let tHeadPerUnit = `
 async function init(){
     await getItemsPerValue()
     await getItemsPerUnit()
+    if(localStorage.getItem("shopping")){
+        $("#modalSave").style.display = "flex"
+    }
+    listing()
+}
+function saveLocalStore(){
+    $("#modalSave").style.display = "none"
+    shopping = JSON.parse(localStorage.getItem("shopping"))
+    listing()
+    calculate("preçoBase", "#CCBC2D")
+}
+function descartLocalStore(){
+    $("#modalSave").style.display = "none"
+    localStorage.removeItem("shopping")
     listing()
 }
 
@@ -141,6 +155,7 @@ function listing(){
 
 function update(id, numArrey){
     shopping[numArrey][id] = {unit: $(`#item-${id}`).children[2].children[0].value}
+    localStorage.setItem("shopping", JSON.stringify(shopping))
     $("#phase").innerHTML = "Tabela R$ 140,00"
     calculate("preçoBase", "#CCBC2D")
 }
@@ -343,14 +358,29 @@ function check(){
     }
     $("#modalCep").style.display = "flex"
 }
-function confirmCep(){
-    let confirmCep = $("#confirmCep").value
-    if(confirmCep == ""){
-        alert("Preencha com o seu CEP")
+
+
+function confirmCpf(){
+    let confirmCpf = $("#confirmCpf").value
+    if(confirmCpf == ""){
+        alert("Preencha com o seu Cpf")
         return
     }
-    form = `*CEP*:%20${confirmCep}%0A`
-    enviar()
+    db.collection("client").doc(confirmCpf).get().then((doc)=>{
+        if(doc.exists){
+            form = `*CPF*:%20${confirmCpf}%0A*CEP*:%20${doc.data().cep}%0A`
+            $('#BaseCep').value = doc.data().cep
+            $("#confirmCpf").style.backgroundColor = "#83FF83"
+            setTimeout(()=>{
+                showSelectFreight()
+            }, 1000)
+        } else {
+            $("#confirmCpf").style.backgroundColor = "#F54E4C"
+            setTimeout(()=>{
+                alert("registro não encontrado, tente de novo o cep")
+            }, 1000)
+        }
+    })
 }
 
 function createCadastro(){
@@ -363,9 +393,63 @@ function createCadastro(){
     let email = $("#email").value
     let address = $("#address").value
     let cpf = $("#cpf").value
-    form = `*Numero*:%20${numero}%0A*Bairro*:%20${bairro}%0A*Cep*:%20${cep}%0A*Cidade*:%20${cidade}%0A*Estado*:%20${estado}%0A*Tel*:%20${tel}%0A*Email*:%20${email}%0A*Endereço*:%20${address}%0A*CPF/CNPJ*:%20${cpf}%0A`
+    $('#BaseCep').value =  $("#cep").value
+    db.collection("client").doc(cpf).get().then((doc)=>{
+        if(doc.exists){
+            alert("você já tem seu registro ")
+            $("#modal").style.display = "none"
+        } else {
+            db.collection("client").doc(cpf).set({
+                name: $("#name").value,
+                numero,
+                bairro,
+                cep,
+                cidade,
+                estado,
+                tel,
+                email,
+                address,
+                cpf
+            })
+            form = `*CPF*:%20${cpf}%0A*CEP*:%20${cep}%0A`
+            showSelectFreight()
+        }
+    })
+}
+
+function showSelectFreight(){
+    document.querySelectorAll('.modal').forEach(element=>{
+        element.style.display = "none"
+      })
+    $("#modalSelectFreight").style.display = "flex"
+    $("#contentSelectFreight").children[0].innerHTML = `Seu cep é: ${$('#BaseCep').value}`
+}
+function showCalc(){
+    $("#modalSelectFreight").style.display = "none"
+    $("#modalConfirmCalcFreight").style.display = "flex"
+}
+function calcFreift(){
+    form += `*Transportadora%20de%20preferencia*:%20${$("#freightPref").value}%0A`
     enviar()
 }
+function showBras(){
+    $("#modalSelectFreight").style.display = "none"
+    $("#listBras").innerHTML = `
+    <li>Peso Total: ${Math.ceil(weightTot)} Kg</li>
+    <li>Numero de caixas: ${Math.ceil(Math.ceil(weightTot) / 25)}</li>
+    <li>Valor total: R$ ${Math.ceil(Math.ceil(weightTot) / 25) * 30}</li>
+    `
+    $("#modalConfirmBras").style.display = "flex"
+}
+function confirmBras(){
+    form += `*Envio%20via*:%20Ônibus%20Brás%0A*Peso%20Total*:%20${Math.ceil(weightTot)}%20Kg%0A*Numero%20de%20caixas*:%20${Math.ceil(Math.ceil(weightTot) / 25)}%0A*Valor%20total*:%20${Math.ceil(Math.ceil(weightTot) / 25) * 30}%0A`
+    enviar()
+}
+
+
+
+
+
 
 
 function enviar(){
@@ -373,6 +457,7 @@ function enviar(){
     let name = $("#name").value
     let shopp = ""
     let payment = $("#payment").options[$("#payment").selectedIndex].value
+    let date = new Date()
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
         shopp += `${objPerValue[id].name} (${objPerValue[id].id}):%0A     Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
@@ -386,7 +471,7 @@ function enviar(){
         shopp += `${objPerUnit[id].name} (${objPerUnit[id].id}):%0A     Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
-                    https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
+                    https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A*Data*:%20${date.getDate()}%20/%20${date.getMonth() + 1}%20/%20${date.getFullYear()}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
                         `
 }
 

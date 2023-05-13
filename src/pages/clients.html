@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/client.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <a href="">Voltar para Admin</a>
+        <input type="button" value="Adicionar" onclick="showAdd()" >
+    </header>
+    <main>
+    </main>
+    <div id="modal" class="modal">
+        <div id="content">
+            <h1>Criar cadastro</h1>
+            <input type="text" placeholder="Nome" id="name">
+            <input type="text" placeholder="Numero" id="numero">
+            <input type="text" placeholder="Endereço" id="address">
+            <input type="text" placeholder="bairro" id="bairro">
+            <input type="text" placeholder="Cep"    id="cep">
+            <input type="text" placeholder="Cidade" id="cidade">
+            <input type="text" placeholder="Estado" id="estado">
+            <input type="text" placeholder="Tel"    id="tel">
+            <input type="text" placeholder="Email"  id="email">
+            <input type="text" placeholder="CPF ou CNPJ" id="cpf">
+            <input type="button" value="Enviar" onclick="createCadastro()">
+            <input type="button" value="Cancelar" onclick="cancel()">
+        </div>
+    </div>
+    <div id="modalDelet" class="modal">
+        <div id="confirmDelet"> 
+            <h2>Deseja apagar:</h2>
+            <input type="hidden" id="deletId">
+            <input type="button" value="Apagar" onclick="delet()">
+            <input type="button" value="Cancelar" onclick="cancel()">
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../scripts/firebase.js"></script>
+    <script src="../scripts/client.js"></script>
+</body>
+</html>
