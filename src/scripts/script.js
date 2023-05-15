@@ -155,6 +155,7 @@ function listing(){
 
 function update(id, numArrey){
     shopping[numArrey][id] = {unit: $(`#item-${id}`).children[2].children[0].value}
+    console.log(shopping)
     localStorage.setItem("shopping", JSON.stringify(shopping))
     $("#phase").innerHTML = "Tabela R$ 140,00"
     calculate("preçoBase", "#CCBC2D")
@@ -457,21 +458,26 @@ function enviar(){
     let name = $("#name").value
     let shopp = ""
     let payment = $("#payment").options[$("#payment").selectedIndex].value
-    let date = new Date()
+    let data = new Date()
+    let day = data.getDate().toString();
+    let dayF = (day.length == 1) ? '0'+day : day;
+    let month  = (data.getMonth()+1).toString();
+    let monthF = (month.length == 1) ? '0'+month : month;
+    let yearF = data.getFullYear();
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
-        shopp += `${objPerValue[id].name} (${objPerValue[id].id}):%0A     Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `COD: (${objPerValue[id].id}) ${objPerValue[id].name} %0A     Valor Unid R$: *${Number(shopping[0][id].price/shopping[0][id].unit).toFixed(2)}* Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[1]).forEach((id)=>{
         if(shopping[1][id].unit>0)
-        shopp += `${objPerUnit[id].name} (${objPerUnit[id].id}):%0A     Quantidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `COD:(${objPerUnit[id].id}) ${objPerUnit[id].name} %0A     Valorr Unid R$: *${Number(shopping[1][id].price/shopping[1][id].unit).toFixed(2)}* Quantidade: *${shopping[1][id].unit}*%0A     Tot: *R$ ${Number(shopping[1][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     Object.keys(shopping[2]).forEach((id)=>{
         if(shopping[2][id].unit>0)
-        shopp += `${objPerUnit[id].name} (${objPerUnit[id].id}):%0A     Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
+        shopp += `COD:(${objPerUnit[id].id}) ${objPerUnit[id].name} %0A     Valorr Unid R$: *${Number(shopping[2][id].price/shopping[2][id].unit).toFixed(2)}* Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
-                    https://wa.me/5511969784323?text=*Novo%20Pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A*Data*:%20${date.getDate()}%20/%20${date.getMonth() + 1}%20/%20${date.getFullYear()}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0A
+                    https://wa.me/5511969784323?text=*Esse%20é%20meu%20pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A*Data*:%20${dayF}%20/%20${monthF}%20/%20${yearF}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0A%0A*BONIFICAÇÃO%20PARA%20CONTRIBUIR%20NO%20FRETE*%0A1%20Minoxiplus%20de%20120ml%2015%.%0APs:%20A%20bonificação%20não%20pode%20ser%20alterada.%0A
                         `
 }
 
