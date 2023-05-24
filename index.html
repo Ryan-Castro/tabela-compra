@@ -118,7 +118,7 @@
                 <input type="text" placeholder="Email"  id="email">
                 <input type="button" value="Criar conta" onclick="createCadastro()">
                 <input type="button" value="Já sou cadastrado" onclick="showModal('MConfirmRegister')">
-                <input type="button" value="Cancelar" onclick="cancel()">
+                <input type="button" value="Voltar" onclick="showModal('MConfirmClient')">
             </div>
         </div>
 
@@ -127,16 +127,16 @@
                 <h1>Confirmar o CNPJ ou CPF</h1>
                 <input type="text" placeholder="CNPJ / CPF" id="confirmCpf">
                 <input type="button" value="Enviar" onclick="confirmCpf()">
-                <input type="button" value="Voltar" onclick="cancel()">
+                <input type="button" value="Voltar" onclick="showModal('MConfirmClient')">
             </div>
         </div>
 
         <div id="MRegisterError" class="modal">
             <div class="content">
-                <h3>Ops... Parece que esses dados não estão cadastrados no sistema desse site</h3>
-                <input type="button" value="Digitar novamente" onclick="showModal('MConfirmRegister')">
-                <input type="button" value="Criar cadastro" onclick="showModal('MCreateRegistration')">
-                <input type="button" value="Cancelar" onclick="cancel()">
+                <h3>Ops... Você precisa ter um cadastro AQUI em nosso SITE</h3>
+                <input type="button" value="Digitar novamente o CNPJ ou CPF" onclick="showModal('MConfirmRegister')">
+                <input type="button" value="Criar um cadastro aqui no SITE" onclick="showModal('MCreateRegistration')">
+                <input type="button" value="Voltar" onclick="showModal('MConfirmClient')">
             </div>
         </div>
 

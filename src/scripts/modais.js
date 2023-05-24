@@ -93,7 +93,7 @@ function confirmCpf(){
         } else {
             $("#confirmCpf").style.backgroundColor = "#F54E4C"
             setTimeout(()=>{
-                alert("registro não encontrado, tente de novo o cep")
+                alert("registro não encontrado, tente de novo pelo CNPJ ou CPF")
                 showModal("MRegisterError")
             }, 1000)
         }
