@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valente Cosméticos</title>
     <link rel="stylesheet" href="./src/styles/style.css">
+    <link rel="stylesheet" href="./src/styles/modais.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
@@ -21,17 +22,18 @@
                         <td class="tdInput"><input type="text" id="name"></td>
                     </tr>
                     <tr>
-                        <td>É cadastrado</td>
-                        <td>
-                            <input type="radio" name="register" id="nRegister" checked value="não">
-                            Não
-                            <input type="radio" name="register" id="yRegister" value="sim">
-                            Sim
+                        <td>Modo De envio</td>
+                        <td class="tdSelect">
+                            <select id="shippingMode">
+                                <option value="Calcular">Calcular o frete</option>
+                                <option value="Preferencia">Prefiro por transportadora</option>
+                                <option value="bras">Ônibus no Brás</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Formar de Pagamento</td>
-                        <td>
+                        <td class="tdSelect">
                             <select id="payment">
                                 <option value="Pix">Pix</option>
                                 <option value="Cartão">Cartão</option>
@@ -67,8 +69,43 @@
             </table>
         </section>
 
-        <div id="modal" class="modal">
-            <div id="content">
+        <div id="MConfirmDemand" class="modal">
+            <div class="content">
+                <h2 id="TDemand">Total da sua compra sem o frete R$:</h2>
+                <input type="button" value="Finalizar pedido" onclick="check()">
+                <input type="button" value="Refazer o pedido" onclick="resetSaveAndReload()">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="MPreferredShipping" class="modal">
+            <div class="content">
+                <h2>Coloque o nome da transportadora</h2>
+                <input type="text" placeholder="Nome" id="preferredShipping">
+                <input type="button" value="Confirmar" onclick="confirmPref()">
+                <input type="button" value="Voltar" onclick="showModal('MConfirmDemand')">
+            </div>
+        </div>
+
+        <div id="MConfirmBras" class="modal">
+            <div class="content">
+                <h2>Via Brás, R$ 30,00 por cada caixa de 25kg</h2>
+                <ul id="listBras"></ul>
+                <input type="button" value="Confirmar pedido via Onibus Brás" onclick="showModal('MConfirmClient')">
+                <input type="button" value="Voltar" onclick="showModal('MConfirmDemand')">
+            </div>
+        </div>
+
+        <div id="MConfirmClient" class="modal">
+            <div class="content">
+                <h2>Antes de continuar</h2>
+                <input type="button" value="Primeira compra" onclick="showModal('MCreateRegistration')">
+                <input type="button" value="Já sou cliente" onclick="showModal('MConfirmRegister')">
+            </div>
+        </div>
+
+        <div id="MCreateRegistration" class="modal">
+            <div class="content">
                 <h1>Criar cadastro</h1>
                 <input type="text" placeholder="Endereço" id="address">
                 <input type="text" placeholder="Numero" id="numero">
@@ -80,70 +117,53 @@
                 <input type="text" placeholder="CPF ou CNPJ" id="cpf">
                 <input type="text" placeholder="Email"  id="email">
                 <input type="button" value="Criar conta" onclick="createCadastro()">
-                <input type="button" value="Cancelar" onclick="cancel()">
-            </div>
-        </div>
-        <div id="modalCep" class="modal">
-            <div id="contentCep">
-                <h1>Confirmar o CPF</h1>
-                <input type="text" placeholder="cpf" id="confirmCpf">
-                <input type="button" value="Enviar" onclick="confirmCpf()">
+                <input type="button" value="Já sou cadastrado" onclick="showModal('MConfirmRegister')">
                 <input type="button" value="Cancelar" onclick="cancel()">
             </div>
         </div>
 
-        <div id="modalSave" class="modal">
-            <div id="contentSave">
+        <div id="MConfirmRegister" class="modal">
+            <div class="content">
+                <h1>Confirmar o CNPJ ou CPF</h1>
+                <input type="text" placeholder="CNPJ / CPF" id="confirmCpf">
+                <input type="button" value="Enviar" onclick="confirmCpf()">
+                <input type="button" value="Voltar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="MRegisterError" class="modal">
+            <div class="content">
+                <h3>Ops... Parece que esses dados não estão cadastrados no sistema desse site</h3>
+                <input type="button" value="Digitar novamente" onclick="showModal('MConfirmRegister')">
+                <input type="button" value="Criar cadastro" onclick="showModal('MCreateRegistration')">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="MComplete" class="modal">
+            <div class="content">
+                <h2>Ok, Nosso Atendente irá orçar o frete</h2>
+                <h3>Teria alguma observação?</h3>
+                <input type="text" id="textOBS" value="">
+                <input type="button" value="Enviar pedido" onclick="enviar()">
+                <input type="button" value="Cancelar" onclick="cancel()">
+            </div>
+        </div>
+
+        <div id="MSave" class="modal">
+            <div class="content">
                 <h1>Deseja continuar com a compra</h1>
                 <input type="button" value="Sim" onclick="saveLocalStore()">
                 <input type="button" value="Não" onclick="descartLocalStore()">
             </div>
         </div>
 
-
-
-
-
-
-
-
-        <input type="hidden" id="BaseCep">
-
-
-        <div id="modalSelectFreight" class="modal">
-            <div id="contentSelectFreight">
-                <h2>Seu cep é: xxxx.xxxx-xxx</h2>
-                <h3>Escolha o meio de frete</h3>
-                <input type="button" value="Calcular frete" onclick="showCalc()">
-                <input type="button" value="Onibus Brás" onclick="showBras()">
-                <input type="button" value="Cancelar" onclick="cancel()">
-            </div>
-        </div>
-
-        <div id="modalConfirmCalcFreight" class="modal">
-            <div id="contentConfirmCalcFreight">
-                <h2>Tem alguma outra transportadora de preferencia?</h2>
-                <input type="text" value="Nenhuma" placeholder="Nenhuma" id="freightPref">
-                <input type="button" value="Confirmar pedido com transportadora de preferencia" onclick="calcFreift()">
-                <input type="button" value="voltar" onclick="showSelectFreight()">
-            </div>
-        </div>
-
-        <div id="modalConfirmBras" class="modal">
-            <div id="contentConfirmBras">
-                <h2>Via Brás, R$ 30,00 por cada caixa de 25kg</h2>
-                <ul id="listBras"></ul>
-                <input type="button" value="Confirmar pedido via Onibus Brás" onclick="confirmBras()">
-                <input type="button" value="Voltar" onclick="showSelectFreight()">
-            </div>
-        </div>
-
-
-        <button onclick="check()">Enviar Whats</button>
+        <button onclick="showModal('MConfirmDemand')">Enviar Whats</button>
     </main>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="src/scripts/firebase.js"></script>
     <script src="./src/scripts/script.js"></script>
+    <script src="./src/scripts/modais.js"></script>
 </body>
 </html>

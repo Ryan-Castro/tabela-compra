@@ -18,11 +18,3 @@ function cancel(){
     element.style.display = "none"
   })
 }
-document.querySelectorAll('.modal').forEach(element=>{
-  element.addEventListener('click', (e)=>{
-    if(e.target.className == "modal"){
-      e.target.style.display = "none"
-    }
-  })
-})
-

@@ -8,6 +8,7 @@ let tProdF = tProd.children[2]
 let valueTot = 0  
 let weightTot = 0 
 let form = ""
+let transport = {mode:"", transportValue: "", totValue: "", box: ""}
 let basePriceArrey = [
     {base:"preço300", min:300, before:"preçoBase", title:"Tabela R$ 300,00", color:"#2296D3"}, 
     {base:"preço600", min:600, before:"preço300", title:"Tabela R$ 600,00", color:"#3A917E"}, 
@@ -67,18 +68,18 @@ async function init(){
     await getItemsPerValue()
     await getItemsPerUnit()
     if(localStorage.getItem("shopping")){
-        $("#modalSave").style.display = "flex"
+        $("#MSave").style.display = "flex"
     }
     listing()
 }
 function saveLocalStore(){
-    $("#modalSave").style.display = "none"
+    $("#MSave").style.display = "none"
     shopping = JSON.parse(localStorage.getItem("shopping"))
     listing()
     calculate("preçoBase", "#CCBC2D")
 }
 function descartLocalStore(){
-    $("#modalSave").style.display = "none"
+    $("#MSave").style.display = "none"
     localStorage.removeItem("shopping")
     listing()
 }
@@ -172,6 +173,7 @@ function calculate(basePrice, color){
         $(`#item-${produto}`).children[3].innerHTML = objPerValue[produto][basePrice].toFixed(2).replace(".", ",") 
     })
     $(`#soma`).innerHTML = `R$: ${valueTot.toFixed(2).replace(".", ",") }`
+    $('#TDemand').innerHTML = `Total da sua compra sem o frete R$: ${valueTot.toFixed(2).replace(".", ",") }`
     $(`#weight`).innerHTML = `Kg: ${weightTot.toFixed(3).replace(".", ",") }`
     document.querySelectorAll(".price").forEach(element=>{
         element.style.backgroundColor = color
@@ -343,118 +345,33 @@ function searchItem(){
 }
 
 function check(){
-    let register = $("input[name='register']:checked").value
-    let name = $("#name").value
-    if(name == ""){
-        alert("preencha seus dados")
-        return
-    } 
-    if(valueTot < 140 ){
-        alert("valor minimo de compre é 140R$")
-        return
+    let select = $("#shippingMode")
+    let selected = select.options[select.selectedIndex].value
+    switch (selected) {
+        case "Calcular": 
+            showModal("MConfirmClient"); 
+            transport.mode = "kangu"
+            transport.transportValue  = "(vamos calcular)"
+            transport.totValue = "(vamos calcular)"
+            break;
+        case "Preferencia": 
+            showModal("MPreferredShipping");
+            transport.transportValue = "(vamos calcular)"
+            transport.totValue  = "(vamos calcular)"
+            break;
+        case "bras": 
+            showBras();
+            transport.mode = "Ônibus Bras"
+            transport.transportValue = `R$ ${Math.ceil(Math.ceil(weightTot) / 25) * 30}`
+            transport.totValue = `R$ ${Number(Math.ceil(Math.ceil(weightTot) / 25) * 30) + valueTot}`
+            transport.box = `%0A*Número%20de%20caixas*:%20${Math.ceil(Math.ceil(weightTot) / 25)}`
+            break;
+        default:
+            break;
     }
-    if(register == "não"){
-        $("#modal").style.display = "flex"
-        return
-    }
-    $("#modalCep").style.display = "flex"
 }
-
-
-function confirmCpf(){
-    let confirmCpf = $("#confirmCpf").value
-    if(confirmCpf == ""){
-        alert("Preencha com o seu Cpf")
-        return
-    }
-    db.collection("client").doc(confirmCpf).get().then((doc)=>{
-        if(doc.exists){
-            form = `*CPF*:%20${confirmCpf}%0A*CEP*:%20${doc.data().cep}%0A`
-            $('#BaseCep').value = doc.data().cep
-            $("#confirmCpf").style.backgroundColor = "#83FF83"
-            setTimeout(()=>{
-                showSelectFreight()
-            }, 1000)
-        } else {
-            $("#confirmCpf").style.backgroundColor = "#F54E4C"
-            setTimeout(()=>{
-                alert("registro não encontrado, tente de novo o cep")
-            }, 1000)
-        }
-    })
-}
-
-function createCadastro(){
-    let numero  = $("#numero").value
-    let bairro  = $("#bairro").value
-    let cep = $("#cep").value
-    let cidade  = $("#cidade").value
-    let estado  = $("#estado").value
-    let tel = $("#tel").value
-    let email = $("#email").value
-    let address = $("#address").value
-    let cpf = $("#cpf").value
-    $('#BaseCep').value =  $("#cep").value
-    db.collection("client").doc(cpf).get().then((doc)=>{
-        if(doc.exists){
-            alert("você já tem seu registro ")
-            $("#modal").style.display = "none"
-        } else {
-            db.collection("client").doc(cpf).set({
-                name: $("#name").value,
-                numero,
-                bairro,
-                cep,
-                cidade,
-                estado,
-                tel,
-                email,
-                address,
-                cpf
-            })
-            form = `*CPF*:%20${cpf}%0A*CEP*:%20${cep}%0A`
-            showSelectFreight()
-        }
-    })
-}
-
-function showSelectFreight(){
-    document.querySelectorAll('.modal').forEach(element=>{
-        element.style.display = "none"
-      })
-    $("#modalSelectFreight").style.display = "flex"
-    $("#contentSelectFreight").children[0].innerHTML = `Seu cep é: ${$('#BaseCep').value}`
-}
-function showCalc(){
-    $("#modalSelectFreight").style.display = "none"
-    $("#modalConfirmCalcFreight").style.display = "flex"
-}
-function calcFreift(){
-    form += `*Transportadora%20de%20preferencia*:%20${$("#freightPref").value}%0A`
-    enviar()
-}
-function showBras(){
-    $("#modalSelectFreight").style.display = "none"
-    $("#listBras").innerHTML = `
-    <li>Peso Total: ${Math.ceil(weightTot)} Kg</li>
-    <li>Numero de caixas: ${Math.ceil(Math.ceil(weightTot) / 25)}</li>
-    <li>Valor total: R$ ${Math.ceil(Math.ceil(weightTot) / 25) * 30}</li>
-    `
-    $("#modalConfirmBras").style.display = "flex"
-}
-function confirmBras(){
-    form += `*Envio%20via*:%20Ônibus%20Brás%0A*Peso%20Total*:%20${Math.ceil(weightTot)}%20Kg%0A*Numero%20de%20caixas*:%20${Math.ceil(Math.ceil(weightTot) / 25)}%0A*Valor%20total*:%20${Math.ceil(Math.ceil(weightTot) / 25) * 30}%0A`
-    enviar()
-}
-
-
-
-
-
-
 
 function enviar(){
-    let register = $("input[name='register']:checked").value
     let name = $("#name").value
     let shopp = ""
     let payment = $("#payment").options[$("#payment").selectedIndex].value
@@ -464,6 +381,10 @@ function enviar(){
     let month  = (data.getMonth()+1).toString();
     let monthF = (month.length == 1) ? '0'+month : month;
     let yearF = data.getFullYear();
+    let obs = ""
+    if($("#textOBS").value != ""){
+        obs = `%0A*Observação*:${$("#textOBS").value}`
+    }
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
         shopp += `COD: (${objPerValue[id].id}) ${objPerValue[id].name} %0A     Valor Unid R$: *${Number(shopping[0][id].price/shopping[0][id].unit).toFixed(2)}* Quantidade: *${shopping[0][id].unit}*%0A     Tot: *R$ ${Number(shopping[0][id].price).toFixed(2).replace(".", ",")}*%0A`
@@ -477,7 +398,7 @@ function enviar(){
         shopp += `COD:(${objPerUnit[id].id}) ${objPerUnit[id].name} %0A     Valorr Unid R$: *${Number(shopping[2][id].price/shopping[2][id].unit).toFixed(2)}* Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
-                    https://wa.me/5511969784323?text=*Esse%20é%20meu%20pedido*%0A------------------------------%0A%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A*J%C3%A1%20%C3%A9%20cadastrado*:%20${register}%0A*Data*:%20${dayF}%20/%20${monthF}%20/%20${yearF}%0A${form}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0AValor%20do%20frete%20R$:%20(vamos%20calcular)%0ATotal%20R$:%20(vamos%20calcular)%0A%0A*BONIFICAÇÃO%20PARA%20CONTRIBUIR%20NO%20FRETE*%0A1%20Minoxiplus%20de%20120ml%2015%.%0APs:%20A%20bonificação%20não%20pode%20ser%20alterada.%0A
+                    https://wa.me/5511969784323?text=*Esse%20é%20meu%20pedido*%0A------------------------------%0A%0A*Data*:%20${dayF}%20/%20${monthF}%20/%20${yearF}%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A${form}%0A*Envio%20via*:%20${transport.mode}%0A*Peso%20total*:%20${Math.ceil(weightTot)}Kg${transport.box}%0A*Valor%20do%20frete*:%20${transport.transportValue}${obs}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0AValor%20do%20frete%20:%20${transport.transportValue}%0ATotal%20:%20${transport.totValue}%0A%0A*BONIFICAÇÃO%20PARA%20CONTRIBUIR%20NO%20FRETE*%0A1%20Minoxiplus%20de%20120ml%2015%.%0APs:%20A%20bonificação%20não%20pode%20ser%20alterada.%0A
                         `
 }
 
