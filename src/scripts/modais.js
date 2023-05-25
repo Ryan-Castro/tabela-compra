@@ -2,7 +2,7 @@ function showModal(element){
     cancel()
     
     if($("#name").value == ""){
-        alert("preencha seus dados")
+        alert("preencha seu nome completo")
         return
     } 
     if(valueTot < 140 ){
@@ -23,9 +23,9 @@ function resetSaveAndReload(){
 function showBras(){
     cancel()
     $("#listBras").innerHTML = `
-        <li>Peso Total: ${Math.ceil(weightTot)} Kg</li>
-        <li>Numero de caixas: ${Math.ceil(Math.ceil(weightTot) / 25)}</li>
-        <li>Valor total do frete: R$ ${Math.ceil(Math.ceil(weightTot) / 25) * 30}</li>
+        <li>Peso Total: ${weightTot} Kg</li>
+        <li>Numero de caixas: ${Math.ceil(weightTot / 25)}</li>
+        <li>Valor total do frete: R$ ${Math.ceil(weightTot / 25) * 30}</li>
     `
     $("#MConfirmBras").style.display = "flex"
 }
