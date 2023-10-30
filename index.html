@@ -91,7 +91,7 @@
             <div class="content">
                 <h2>Via Brás, R$ 30,00 por cada caixa de 25kg</h2>
                 <ul id="listBras"></ul>
-                <input type="button" value="Confirmar pedido via Onibus Brás" onclick="showModal('MConfirmClient')">
+                <input type="button" value="Confirmar pedido via Onibus Brás" onclick="showBonus()">
                 <input type="button" value="Voltar" onclick="showModal('MConfirmDemand')">
             </div>
         </div>
@@ -101,6 +101,7 @@
                 <h2>Antes de continuar</h2>
                 <input type="button" value="Primeira compra" onclick="showModal('MCreateRegistration')">
                 <input type="button" value="Já sou cliente" onclick="showModal('MConfirmRegister')">
+                <input type="button" value="Cancel" onclick="cancel()">
             </div>
         </div>
 
@@ -149,6 +150,28 @@
                 <input type="button" value="Cancelar" onclick="cancel()">
             </div>
         </div>
+        <div id="MConfirmKangu" class="modal">
+            <div class="content">
+                <h1>Escreva seu cep para calcularmos</h1>
+                <input type="text" id="kanguCep">
+                <input type="button" value="Calcular" onclick="calcKangu()">
+                <input type="button" value="Cancel" onclick="cancel()">
+            </div>
+        </div>
+        <div id="MSelectKangu" class="modal">
+            <div class="content">
+                <h1>Selecione uma das opções</h1>
+                <div id="optionsKangu"></div>
+                <input type="button" value="Cancel" onclick="showModal('MConfirmKangu')">
+            </div>
+        </div>
+        <div id="MBonus" class="modal">
+            <div class="content">
+                <h1>Selecione uma das opções para seu bonus</h1>
+                <div id="optionsBonus"></div>
+                <input type="button" value="Cancel" onclick="showModal('MConfirmKangu')">
+            </div>
+        </div>
 
         <div id="MSave" class="modal">
             <div class="content">
@@ -157,7 +180,7 @@
                 <input type="button" value="Não" onclick="descartLocalStore()">
             </div>
         </div>
-
+        
         <button onclick="showModal('MConfirmDemand')">Enviar Whats</button>
     </main>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

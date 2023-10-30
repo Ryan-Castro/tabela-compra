@@ -8,6 +8,7 @@ let tProdF = tProd.children[2]
 let valueTot = 0  
 let weightTot = 0 
 let form = ""
+let bonus = ""
 let transport = {mode:"", transportValue: "", totValue: "", box: ""}
 let basePriceArrey = [
     {base:"preço300", min:300, before:"preçoBase", title:"Tabela R$ 300,00", color:"#2296D3"}, 
@@ -156,7 +157,6 @@ function listing(){
 
 function update(id, numArrey){
     shopping[numArrey][id] = {unit: $(`#item-${id}`).children[2].children[0].value}
-    console.log(shopping)
     localStorage.setItem("shopping", JSON.stringify(shopping))
     $("#phase").innerHTML = "Tabela R$ 140,00"
     calculate("preçoBase", "#CCBC2D")
@@ -349,15 +349,21 @@ function check(){
     let selected = select.options[select.selectedIndex].value
     switch (selected) {
         case "Calcular": 
-            showModal("MConfirmClient"); 
-            transport.mode = "kangu"
-            transport.transportValue  = "(vamos calcular)"
-            transport.totValue = "(vamos calcular)"
+            if(weightTot<30){
+                showModal("MConfirmKangu"); 
+            } else {
+                showModal("MConfirmClient"); 
+                alert("Peso maior de 30Kg, iremos fazer isso manualmente")
+                transport.mode = "kangu"
+                transport.transportValue  = "(vamos calcular)"
+                transport.totValue = "(vamos calcular)"
+            }
             break;
         case "Preferencia": 
             showModal("MPreferredShipping");
             transport.transportValue = "(vamos calcular)"
             transport.totValue  = "(vamos calcular)"
+            bonus = "%0A*Bonificação*:%20(vamos combinar)"
             break;
         case "bras": 
             showBras();
@@ -383,7 +389,7 @@ function enviar(){
     let yearF = data.getFullYear();
     let obs = ""
     if($("#textOBS").value != ""){
-        obs = `%0A*Observação*:${$("#textOBS").value}`
+        obs = `%0A*Observação*:%20${$("#textOBS").value}`
     }
     Object.keys(shopping[0]).forEach((id)=>{
         if(shopping[0][id].unit>0)
@@ -398,7 +404,7 @@ function enviar(){
         shopp += `COD:(${objPerUnit[id].id}) ${objPerUnit[id].name} %0A     Valorr Unid R$: *${Number(shopping[2][id].price/shopping[2][id].unit).toFixed(2)}* Quantidade: *${shopping[2][id].unit}*%0A     Tot: *R$ ${Number(shopping[2][id].price).toFixed(2).replace(".", ",")}*%0A`
     })
     location.href = `
-                    https://wa.me/5511969784323?text=*Esse%20é%20meu%20pedido*%0A------------------------------%0A%0A*Data*:%20${dayF}%20/%20${monthF}%20/%20${yearF}%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A${form}%0A*Envio%20via*:%20${transport.mode}${transport.box}%0A*Valor%20do%20frete*:%20${transport.transportValue}${obs}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0AValor%20do%20frete%20:%20${transport.transportValue}%0ATotal%20:%20${transport.totValue}%0A%0A*BONIFICAÇÃO%20PARA%20CONTRIBUIR%20NO%20FRETE*%0A1%20Minoxiplus%20de%20120ml%2015%.%0APs:%20A%20bonificação%20não%20pode%20ser%20alterada.%0A
+                    https://wa.me/5511969784323?text=*Esse%20é%20meu%20pedido*%0A------------------------------%0A%0A*Data*:%20${dayF}%20/%20${monthF}%20/%20${yearF}%0A*Nome*:%20${name.replaceAll(" ", "%20")}%0A${form}%0A*Envio%20via*:%20${transport.mode}${transport.box}%0A*Valor%20do%20frete*:%20${transport.transportValue}${obs}%0A------------------------------%0AProdutos:%0A%0A${shopp.replaceAll(" ", "%20")}%0A------------------------------%0A%0APeso%20Total:%20*${weightTot.toFixed(2).toString().replace(".", ",")}Kg*%0AForma%20de%20Pagamento:%20*${payment}*%0AValor%20Total%20Sem%20o%20Frete:%20*R$${valueTot.toFixed(2).toString().replace(".", ",")}*%0AValor%20do%20frete%20:%20${transport.transportValue}%0ATotal%20:%20${transport.totValue}%0A${bonus}%0A
                         `
 }
 

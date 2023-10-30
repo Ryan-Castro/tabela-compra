@@ -71,7 +71,7 @@ function createCadastro(){
                 address,
                 cpf
             })
-            form += `*CPF*:%20${cpf}%0A*CEP*:%20${cep}%0A`
+            form += `*CPF*:%20${cpf}%0A*CEP*:%20${cep}`
             showModal("MComplete")
         }
     })
@@ -85,7 +85,7 @@ function confirmCpf(){
     }
     db.collection("client").doc(confirmCpf).get().then((doc)=>{
         if(doc.exists){
-            form = `*CPF*:%20${confirmCpf}%0A*CEP*:%20${doc.data().cep}%0A`
+            form = `*CPF*:%20${confirmCpf}%0A*CEP*:%20${doc.data().cep}`
             $("#confirmCpf").style.backgroundColor = "#83FF83"
             setTimeout(()=>{
                 showModal("MComplete")
@@ -100,6 +100,59 @@ function confirmCpf(){
     })
 }
 
+function calcKangu(){
+    if($("#kanguCep").value = ""){
+        alert("Escreva seu cep para calcularmos")
+        return
+    }
+    fetch(`http://valentecosmeticos.com/api/?cepDestino=${$("#kanguCep").value}&peso=${weightTot}&valor=${valueTot}`).then(res=>res.json()).then((json)=>{
+        json.forEach(element => {
+            $("#optionsKangu").innerHTML += `<div onclick="handleKangu('${element.transp_nome}', '${element.vlrFrete}')"><h3>${element.transp_nome}</h3><span>R$: ${element.vlrFrete}</span></div>`
+        });
+        showModal("MSelectKangu")
+    })
+}
+
+function handleKangu(name, value){
+    transport.mode = name
+    transport.transportValue  = value
+    transport.totValue = (valueTot + value)
+    cancel()
+    showBonus()
+}
+
+function showBonus(){
+    showModal("MBonus")
+    if(transport.transportValue >= 35 && transport.transportValue <= 65){
+        $("#optionsBonus").innerHTML = `
+        <input type="button" value="1 Minoxiplus 15% 120ML" onclick="saveBonus('1%20Minoxiplus%2015%%20120ML')"/>
+        <input type="button" value="1 Minoxiplus 15% 60ML" onclick="saveBonus('1%20Minoxiplus%2015%%2060ML')"/>
+        <input type="button" value="1 Minoxiplus 8% 60ML" onclick="saveBonus('1%20Minoxiplus%208%%2060ML')"/>
+        <input type="button" value="1 Pomada em pó" onclick="saveBonus('1%20Pomada%20em%20pó')"/>
+        `
+    }
+    if(transport.transportValue > 65 && transport.transportValue <= 100){
+        $("#optionsBonus").innerHTML = `
+        <input type="button" value="2 Minoxiplus 15% 120ML" onclick="saveBonus('2%20Minoxiplus%2015%%20120ML')"/>
+        <input type="button" value="2 Minoxiplus 15% 60ML" onclick="saveBonus('2%20Minoxiplus%2015%%2060ML')"/>
+        <input type="button" value="2 Minoxiplus 8% 60ML" onclick="saveBonus('2%20Minoxiplus%208%%2060ML')"/>
+        <input type="button" value="2 Pomada em pó" onclick="saveBonus('2%20Pomada%20em%20pó')"/>
+        `
+    }
+    if(transport.transportValue > 100 && transport.transportValue <= 180){
+        $("#optionsBonus").innerHTML = `
+        <input type="button" value="3 Minoxiplus 15% 120ML" onclick="saveBonus('3%20Minoxiplus%2015%%20120ML')"/>
+        <input type="button" value="3 Minoxiplus 15% 60ML" onclick="saveBonus('3%20Minoxiplus%2015%%2060ML')"/>
+        <input type="button" value="3 Minoxiplus 8% 60ML" onclick="saveBonus('3%20Minoxiplus%208%%2060ML')"/>
+        <input type="button" value="3 Pomada em pó" onclick="saveBonus('3%20Pomada%20em%20pó')"/>
+        `
+    }
+}
+
+function saveBonus(text){
+    bonus = `%0A*Bonificação*:%20${text}`
+    showModal("MConfirmClient")
+}
 
 
 
